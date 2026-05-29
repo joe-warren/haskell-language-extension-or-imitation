@@ -247,9 +247,11 @@ fakeExtensions =
     , { name: "DeriveBounded", description: submittedBy "mniip" 
         [ HH.text "It is always possible to derive Bounded. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
         ] 
+    }
     , { name: "DeriveIx", description: submittedBy "mniip" 
         [ HH.text "It is always possible to derive Ix. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
-        ] 
+        ]
+    }
     , { name: "DeriveCoercible", description: submittedBy "mniip" 
         [ HH.text "Coercible is a compiler built-in, for which no instances can be defined (nor derived). Real typeclass-specific deriving extensions are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
         ] 
@@ -336,9 +338,41 @@ fakeExtensions =
     ,{ name: "RankNFile", description: submittedBy "mniip" [] }
     ,{ name: "StrictPolyRec", description: submittedBy "bradrn" []}
     ,{ name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
-    ,{ name: "VisibleForall", description: submittedBy "Alice" [
+    ,{ name: "VisibleForall", description: submittedBy "Alice"
         [ HH.text "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`"
         ]
     }
     , { name: "RecursiveTypes", description: submittedBy "Alice" []}
+    , { name: "ExistentialTypes", description: submittedBy "mniip" 
+        [ HH.text "The extension that allows defining existential datatypes is actually called ExistentialQuantification."
+        ]
+    }
+    , { name: "ImplicitParameters", description: submittedBy "mniip"
+        [ HH.text "The extension introducing implicit parameters (?x :: X) is actually called ImplicitParams."
+        ]
+    } 
+    , { name: "ClosedTypeFamilies", description: submittedBy "mniip"
+        [ HH.text "The ability to write a closed type family (type family ... where) is always available whenever TypeFamilies are themselves enabled."
+        ]
+    }
+    , { name: "FlexibleSuperClasses", description: submittedBy "mniip" 
+        [ HH.text "Real extensions that relax requirements on typeclass use are FlexibleContexts and FlexibleInstances. A similar sounding real extension is UndecidableSuperClasses."
+        ]
+    }
+    , { name: "UndecidableTypeFamilies", description: submittedBy "mniip"
+          [ HH.text "Disabling termination checking for type family reduction is actually included in UndecidableInstances. Type family equations are considered \"instances\"."
+          ]
+    }
+    , { name: "LetPolymorphism", description: submittedBy "mniip"
+          [ HH.text "Writing a polymorphic binding with a type signature in a let is part of Haskell98 and is always enabled. The extension that controls whether bindings without a type signature automatically become polymorphic is actually called MonoLocalBinds."
+          ]
+    }
+    , { name: "PedanticBottoms", description: submittedBy "mniip"
+          [ HH.text "The optimizer's treatment of bottoms is controlled by a -fpedantic-bottoms flag, which can be specified in a {-# OPTIONS_GHC ... #-} pragma. It is not a language extension."
+          ]
+    }
+    , { name: "QualifiedIf", description: submittedBy "mniip"
+          [ HH.text "The extension that allows customizing the implementation of if ... then ... else ... is RebindableSyntax. There's no way to qualify which ifThenElse is to be used, like you can with the QualifiedDo extension."
+          ]
+    }
     ]
