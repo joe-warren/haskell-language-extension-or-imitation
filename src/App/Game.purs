@@ -22,12 +22,12 @@ import Halogen.HTML.Events as HE
 import App.Extensions
 import Data.Array as Array
 import Effect (Effect)
-import Effect.Shuffle (shuffle)
+import Effect.Shuffle (shuffle, pickOr)
 import Data.Array.Extra.Unsafe (unsafeHead)
 import Data.Maybe (Maybe (Just, Nothing))
+import Effect.Class (class MonadEffect, liftEffect)
 
-
-data Answer = LanguageExtension | Imitation
+data Answer = Real | Fake
 
 type Question = 
     { correctAnswer :: Answer
@@ -35,13 +35,14 @@ type Question =
     }
 
 goodQuestion :: Extension -> Question
-goodQuestion e = {correctAnswer: LanguageExtension, extension: e}
+goodQuestion e = {correctAnswer: Real, extension: e}
 
 badQuestion :: Extension -> Question
-badQuestion e = {correctAnswer: Imitation, extension: e}
+badQuestion e = {correctAnswer: Fake, extension: e}
 
 type AnsweredQuestion = 
     { givenAnswer :: Answer
+    , message :: String
     , question :: Question
     }
 
@@ -61,7 +62,7 @@ type CurrentGame =
 data State
   = Playing CurrentGame | Results (Array AnsweredQuestion)
 
-mkComponent :: forall q i o m. Effect (H.Component q i o m)
+mkComponent :: forall q i o m. MonadEffect m => Effect (H.Component q i o m)
 mkComponent = do
     good <- map goodQuestion <<< Array.take 6 <$> shuffle realExtensions
     bad <- map badQuestion <<< Array.take 6 <$> shuffle fakeExtensions
@@ -90,15 +91,16 @@ renderCurrentGame state =
             HH.div_ 
                 [ HH.p_ [ HH.text question.extension.name ]
                 , HH.button
-                    [ HE.onClick \_ -> GiveAnswer LanguageExtension ]
+                    [ HE.onClick \_ -> GiveAnswer Real ]
                     [ HH.text "Extension" ]
                 , HH.button
-                    [ HE.onClick \_ -> GiveAnswer Imitation ]
+                    [ HE.onClick \_ -> GiveAnswer Fake ]
                     [ HH.text "Imitation" ]
                 ]
         Answered answeredQuestion ->
             HH.div_ 
                 [ HH.p_ [ HH.text answeredQuestion.question.extension.name ]
+                , HH.p_ [ HH.text answeredQuestion.message ]
                 , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
                 , HH.button
                     [ HE.onClick \_ -> NextQuestion ]
@@ -125,21 +127,31 @@ nextQuestion (Playing s) =
                     }
         _ -> Playing s
 
-answer :: Answer -> State -> State
-answer _ (Results r) = (Results r)
+
+answer :: Answer -> State -> Effect State
+answer _ (Results r) = pure (Results r)
 answer ans (Playing s) =
     case s.currentView of 
-        ToAnswer q -> Playing ( s{
-            currentView = Answered { givenAnswer: ans, question: q}
+        ToAnswer q -> do
+            msg <- answerMessage ans q.correctAnswer
+            pure ( Playing ( s{
+                    currentView = Answered { givenAnswer: ans, message: msg, question: q}
 
-        })
-        _ -> (Playing s)
+                }))
+        _ -> pure (Playing s)
 
-
-
-handleAction :: forall cs o m. Action → H.HalogenM State Action cs o m Unit
+-- given then expected
+answerMessage :: Answer -> Answer -> Effect String
+answerMessage Real Real = pickOr "" ["Well Done", "Well Spotted", "Nicely Done", "Correct", "Absolutely"]
+answerMessage Fake Fake = pickOr "" ["Spot On", "No Fooling You", "It's Absolutely Fake", "It's Not Real"]
+answerMessage Real Fake = pickOr "" ["Wrong", "Gotcha", "It's Fake", "Sorry"]
+answerMessage Fake Real = pickOr "" ["It's Real", "Would You Believe it's Real", "It's a Real Extension"]
+ 
+handleAction :: forall cs o m. MonadEffect m => Action -> H.HalogenM State Action cs o m Unit
 handleAction = case _ of
   NextQuestion -> H.modify_ nextQuestion
-  GiveAnswer ans -> H.modify_ (answer ans) 
+  GiveAnswer ans -> do 
+    s <- H.get 
+    H.put =<< liftEffect (answer ans s)
   
   
