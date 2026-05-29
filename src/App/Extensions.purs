@@ -396,4 +396,10 @@ fakeExtensions =
     ,{ name: "RankNFile", description: HH.div_
         [HH.p_ [HH.text "submitted by mniip"]
         ]}
+    , {name: "StrictPolyRec", description: HH.div_
+        [HH.p_ [HH.text "submitted by bradrn"]
+        ]}
+    , {name: "PolymorphismRestriction", description: HH.div_
+        [HH.p_ [HH.text "submitted by bradrn"]
+        ]}
     ]
