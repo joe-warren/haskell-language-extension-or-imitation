@@ -393,4 +393,7 @@ fakeExtensions =
     ,{ name: "TypeAntonyms", description: HH.div_
         [HH.p_ [HH.text "submitted by Hécate"]
         ]}
+    ,{ name: "RankNFile", description: HH.div_
+        [HH.p_ [HH.text "submitted by mniip"]
+        ]}
     ]
