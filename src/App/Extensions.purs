@@ -153,7 +153,7 @@ realExtensions =
     ]
 
 submittedBy :: String -> Array HH.PlainHTML -> HH.PlainHTML
-submittedBy submitter desc = HH.div_ (Array.snoc desc (HH.p_ [HH.text ("submitted by " <> submitter)]))
+submittedBy submitter desc = HH.div_ [HH.p_ desc, HH.p_ [HH.text ("submitted by " <> submitter)]]
 
 fakeExtensions :: Array Extension 
 fakeExtensions =
@@ -169,48 +169,126 @@ fakeExtensions =
     }
     , { name: "NonDecreasingComplexity", description: submittedBy "edmundnoble" [] }
     , { name: "ArrowSyntax", description: submittedBy "mniip"
-            [ HH.p_ [HH.text "It's Arrows"]
+            [ HH.p_ [HH.text "The extension that enables arrow syntax is actually called Arrows."]
             ]
     }
     , { name: "RecordDotSyntax", description: submittedBy "mniip"
-            [ HH.p_ [HH.text "It's OverloadedRecordDot"]
+            [ HH.text "The extensions comprising record dot syntax are actually called OverloadedRecordDot and OverloadedRecordUpdate."
             ]
     }
-    , { name: "ExtendedLists", description: submittedBy "mniip" []}
-    , { name: "InjectiveTypeFamilies", description: submittedBy "mniip" [] }
-    , { name: "DecreasingIndentation", description:  submittedBy "mniip" [] }
-    , { name: "FlexibleClasses", description:  submittedBy "mniip" [] }
-    , { name: "FlexibleConstraints", description:  submittedBy "mniip" [] }
-    , { name: "UndecidableConstraints", description:  submittedBy "mniip" [] }
-    , { name: "LiberalInstances", description: submittedBy "mniip" [] } 
-    , { name: "QuantifiedTypes", description: submittedBy "mniip" [] } 
-    , { name: "QualifiedTypes", description: submittedBy "mniip" [] } 
-    , { name: "UniversalQuantification", description: submittedBy "mniip" [] } 
+    , { name: "ExtendedLists", description: submittedBy "mniip" 
+        [HH.text "The real extensions are: OverloadedLists for overloading the list literal syntax, ParallelListComp for extending the comprehension syntax with zips, and TransformListComp for extending the comprehension syntax with \"group by\" and arbitrary processing steps."
+        ]
+    }
+    , { name: "InjectiveTypeFamilies", description: submittedBy "mniip" 
+        [HH.text "The extension that allows specifying injectivity annotations for type families is actually called TypeFamilyDependencies."] 
+    }
+    , { name: "DecreasingIndentation", description:  submittedBy "mniip" 
+        [HH.text "The extension that relaxes indentation requirements is actually called NondecreasingIndentation."
+        ]
+    }
+    , { name: "FlexibleClasses", description:  submittedBy "mniip"
+        [ HH.text "The extensions that relax requirements on typeclass use are actually called FlexibleContexts and FlexibleInstances."
+        ] 
+    }
+    , { name: "FlexibleConstraints", description:  submittedBy "mniip" 
+        [ HH.text "The extensions that relax requirements on typeclass use are actually called FlexibleContexts and FlexibleInstances."
+        ]
+    }
+    , { name: "UndecidableConstraints", description:  submittedBy "mniip" 
+        [HH.text "The extension that disables termination checking for constraint resolution is actually called UndecidableInstances."
+        ]
+    }
+    , { name: "LiberalInstances", description: submittedBy "mniip"
+        [HH.text "The real extensions are: FlexibleInstances for relaxed rules for instances, TypeSynonymInstances allowing use of type synonyms in instances, and LiberalTypeSynonyms for deferring impredicativity and partial application checks until after type synonyms are expanded."
+        ]
+    }    
+    , { name: "QuantifiedTypes", description: submittedBy "mniip" 
+        [ HH.text "The extension that enables the forall quantifier in types is ExplicitForAll or RankNTypes. The extension that enables the forall quantifier in constraints is QuantifiedConstraints."
+        ]
+    } 
+    , { name: "QualifiedTypes", description: submittedBy "mniip" 
+        [ HH.text "There's no such thing as a \"qualified\" type."
+        ] } 
+    , { name: "UniversalQuantification", description: submittedBy "mniip" 
+        [ HH.text "The \"universal\" quantifier is the forall quantifier, enabled by ExplicitForAll or RankNTypes. The extension that allows the use of the forall quantifier in datatype definitions is actually called ExistentialQuantification."
+        ]
+    } 
     , { name: "MultiParamTypeFamilies", description: submittedBy "mniip"
-            [ HH.p_ [HH.text "MultiParamTypeClasses is real, but this isn't"]
-            ]
+        [ HH.text "The real extension is MultiParamTypeClasses. Type families (whenever enabled) can always have multiple parameters."
+        ]
     }
-    , { name: "NullaryTypeFamilies", description: submittedBy "mniip" [] } 
-    , { name: "DependentKinds", description: submittedBy "mniip" [] } 
-    , { name: "KindOperators", description: submittedBy "mniip" [] } 
-    , { name: "DeriveEq", description: submittedBy "mniip" [] } 
-    , { name: "DeriveOrd", description: submittedBy "mniip" [] } 
-    , { name: "DeriveShow", description: submittedBy "mniip" [] } 
-    , { name: "DeriveRead", description: submittedBy "mniip" [] } 
-    , { name: "DeriveEnum", description: submittedBy "mniip" [] } 
-    , { name: "DeriveBounded", description: submittedBy "mniip" [] } 
-    , { name: "DeriveIx", description: submittedBy "mniip" [] } 
-    , { name: "DeriveCoercible", description: submittedBy "mniip" [] } 
-    , { name: "DeriveMonad", description: submittedBy "mniip" [] } 
-    , { name: "DeriveNewtype", description: submittedBy "mniip" [] } 
-    , { name: "UnboxedLiterals", description: submittedBy "mniip" [] } 
-    , { name: "UnliftedCoercions", description: submittedBy "mniip" [] } 
-    , { name: "ListSections", description: submittedBy "mniip" [] } 
-    , { name: "WildcardImports", description: submittedBy "mniip" [] } 
-    , { name: "TypeSynonyms", description: submittedBy "mniip" [] } 
-    , { name: "ExplicitArguments", description: submittedBy "mniip" [] } 
-    , { name: "CompletePatterns", description: submittedBy "mniip" [] } 
-    , { name: "RecursiveLet", description: submittedBy "mniip" [] } 
+    , { name: "NullaryTypeFamilies", description: submittedBy "mniip" 
+        [HH.text "The real extension is NullaryTypeClasses. Type families (whenever enabled) can always have no arguments."
+        ]
+    } 
+    , { name: "DependentKinds", description: submittedBy "mniip"
+        [HH.text "Kinding (types of types) is always dependently typed in GHC, though this can only be observed if PolyKinds and DataKinds are in use."
+        ]
+    } 
+    , { name: "KindOperators", description: submittedBy "mniip" 
+        [HH.text "The real extension is called TypeOperators. Kinds are not distinguished from types and can use operators as well when enabled."
+        ] } 
+    , { name: "DeriveEq", description: submittedBy "mniip" 
+        [ HH.text "It is always possible to derive Eq. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] } 
+    , { name: "DeriveOrd", description: submittedBy "mniip"
+        [ HH.text "It is always possible to derive Ord. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] } 
+    , { name: "DeriveShow", description: submittedBy "mniip"
+        [ HH.text "It is always possible to derive Show. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] } 
+    , { name: "DeriveRead", description: submittedBy "mniip"
+        [ HH.text "It is always possible to derive Read. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] } 
+    , { name: "DeriveEnum", description: submittedBy "mniip"
+        [ HH.text "It is always possible to derive Enum. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] } 
+    , { name: "DeriveBounded", description: submittedBy "mniip" 
+        [ HH.text "It is always possible to derive Bounded. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] 
+    , { name: "DeriveIx", description: submittedBy "mniip" 
+        [ HH.text "It is always possible to derive Ix. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] 
+    , { name: "DeriveCoercible", description: submittedBy "mniip" 
+        [ HH.text "Coercible is a compiler built-in, for which no instances can be defined (nor derived). Real typeclass-specific deriving extensions are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ] 
+    } 
+    , { name: "DeriveMonad", description: submittedBy "mniip" 
+        [ HH.text "A Monad instance cannot be derived based on a datatype's structure. Real extensions that do enable deriving for additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        ]
+    } 
+    , { name: "DeriveNewtype", description: submittedBy "mniip" 
+        [HH.text "The extension that allows deriving instances of most classes for a newtype is actually called GeneralisedNewtypeDeriving."
+        ]
+    } 
+    , { name: "UnboxedLiterals", description: submittedBy "mniip" 
+        [ HH.text "The syntax for literals of unboxed types, such as 1# :: Int# is actually enabled as part of the MagicHash extension."
+        ] } 
+    , { name: "UnliftedCoercions", description: submittedBy "mniip" 
+        [ HH.text "GHC can choose to use lifted or unlifted representations for coercions, but the user generally has no control over this."
+        ] } 
+    , { name: "ListSections", description: submittedBy "mniip" 
+        [ HH.text "The extension that allows omitting an element of a tuple to create a tupling operator section is called TupleSections. There is no analogous extension for lists."
+        ] } 
+    , { name: "WildcardImports", description: submittedBy "mniip"
+        [HH.text "A wildcard import (import X rather than import X (x)) is part of Haskell98 and is always available. A similar sounding real extension is RecordWildCards."
+        ] 
+    } 
+    , { name: "TypeSynonyms", description: submittedBy "mniip" 
+        [ HH.text "Type synonyms type X = ... are part of Haskell98 and are always available."
+        ] } 
+    , { name: "ExplicitArguments", description: submittedBy "mniip" 
+        [HH.text " The extension that allows explicit type-level arguments is actually called TypeApplications. The extension that allows making such parameters required is actually called RequiredTypeArguments."
+        ]
+    } 
+    , { name: "CompletePatterns", description: submittedBy "mniip" 
+        [HH.text "{-# COMPLETE ... #-} pragmas for pattern synonyms are actually always available whenever PatternSynonyms itself is enabled."
+    ] } 
+    , { name: "RecursiveLet", description: submittedBy "mniip" 
+        [HH.text "The ability to write (mutually) recursive bindings in a let is part of Haskell98 and is always enabled."
+        ]
+    } 
     ,{ name: "OverloadedDecimalDot", description: submittedBy "lexi" [] }
     ,{ name: "StarPatterns", description: submittedBy "lexi" [] }
     ,{ name: "NoForcing", description: submittedBy "lexi" [] }
@@ -256,6 +334,11 @@ fakeExtensions =
     ,{ name: "BestEffortCoercions", description: submittedBy "sshuck" [] }
     ,{ name: "TypeAntonyms", description: submittedBy "Hécate" [] }
     ,{ name: "RankNFile", description: submittedBy "mniip" [] }
-    , {name: "StrictPolyRec", description: submittedBy "bradrn" []}
-    , {name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
+    ,{ name: "StrictPolyRec", description: submittedBy "bradrn" []}
+    ,{ name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
+    ,{ name: "VisibleForall", description: submittedBy "Alice" [
+        [ HH.text "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`"
+        ]
+    }
+    , { name: "RecursiveTypes", description: submittedBy "Alice" []}
     ]
