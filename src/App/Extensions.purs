@@ -108,7 +108,8 @@ realExtensions =
     ,{ name :"QualifiedDo", description : HH.text "Allow qualified do-notation desugaring."}
     ,{ name :"QualifiedStrings", description : HH.text "Enable qualified string literals."}
     ,{ name :"QuantifiedConstraints", description : HH.text "Allow forall quantifiers in constraints."}
-    ,{ name :"QuasiQuotes", description : HH.text "Allow quasiquotation syntax.Rank2TypesEnable rank-2 types."}
+    ,{ name :"QuasiQuotes", description : HH.text "Allow quasiquotation syntax."}
+    ,{ name :"Rank2Types", description : HH.text "Enable rank-2 types."}
     ,{ name :"RankNTypes", description : HH.text "Allow types of rank greater than one."}
     ,{ name :"RebindableSyntax", description : HH.text "Allow rebinding of builtin syntax."}
     ,{ name :"RecordWildCards", description : HH.text "Allow use of record wildcard syntax."}
@@ -152,119 +153,244 @@ realExtensions =
 
 fakeExtensions :: Array Extension 
 fakeExtensions =
-    [ { name: "ApplicativeDon't", description: HH.text "It's ApplicativeDo, Lol" }
-    , { name: "ApplicativeComprehensions", description: HH.text "thanks to Reed" }
-    , { name: "UnboxedNewtypes", description: HH.text "thanks to Reed" }
-    , { name: "UnboxedDatatypes", description: HH.text "thanks to Reed" }
-    , { name: "DeriveTypeable", description: HH.text "thanks to Reed" }
+    [ { name: "ApplicativeDon't", description: HH.text "It's ApplicativeDo" }
+    , { name: "MagicCrack", description: HH.text "You're probably thinking of MagicHash" }
+    , { name: "ApplicativeComprehensions", description: HH.text "submitted by Reed" }
+    , { name: "UnboxedNewtypes", description: HH.text "submitted by Reed" }
+    , { name: "UnboxedDatatypes", description: HH.text "submitted by Reed" }
+    , { name: "DeriveTypeable", description: HH.text "submitted by Reed" }
     , { name: "HexLiterals", description: HH.div_
             [ HH.p_ [HH.text "BinaryLiterals is real, but this isn't"]
-            , HH.p_ [HH.text "thanks to Reed"]
+            , HH.p_ [HH.text "submitted by Reed"]
         ] }
-    , { name: "NonDecreasingComplexity", description: HH.text "thanks to edmundnoble" }
+    , { name: "NonDecreasingComplexity", description: HH.text "submitted by edmundnoble" }
     , { name: "ArrowSyntax", description: HH.div_
             [ HH.p_ [HH.text "It's Arrows"]
-            , HH.p_ [HH.text "thanks to mniip"]
+            , HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "RecordDotSyntax", description: HH.div_
             [ HH.p_ [HH.text "It's OverloadedRecordDot"]
-            , HH.p_ [HH.text "thanks to mniip"]
+            , HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "ExtendedLists", description: HH.div_
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "InjectiveTypeFamilies", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DecreasingIndentation", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "FlexibleClasses", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "FlexibleConstraints", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "UndecidableConstraints", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "LiberalInstances", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "QuantifiedTypes", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "QualifiedTypes", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "UniversalQuantification", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "MultiParamTypeFamilies", description: HH.div_ 
             [ HH.p_ [HH.text "MultiParamTypeClasses is real, but this isn't"]
-            , HH.p_ [HH.text "thanks to mniip"]
+            , HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "NullaryTypeFamilies", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DependentKinds", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "KindOperators", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveEq", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveOrd", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveShow", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveRead", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveEnum", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveBounded", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveIx", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveCoercible", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveMonad", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "DeriveNewtype", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "UnboxedLiterals", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "UnliftedCoercions", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "ListSections", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "WildcardImports", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "TypeSynonyms", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "ExplicitArguments", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "CompletePatterns", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
     , { name: "RecursiveLet", description: HH.div_ 
-            [ HH.p_ [HH.text "thanks to mniip"]
+            [ HH.p_ [HH.text "submitted by mniip"]
         ] }
+    ,{ name: "OverloadedDecimalDot", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "StarPatterns", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NoForcing", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "GenerousKinds", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "Golang", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "ImportQualifiedInfix", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NandPatterns", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "CoherentInstances", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NoLayoutRule", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "RebindableSemicolons", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "LambdaIf", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NoPolymorphism", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "LazyData", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "QuasiBangs", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "CloseMissingParens", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "DollarKinds", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "GGADTs", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "SanctifiedDo", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "IncoherentApplication", description: HH.div_
+        [HH.p_ [HH.text "submitted by taneb"]
+        ]}
+    ,{ name: "NoPragmas", description: HH.div_
+        [HH.p_ [HH.text "submitted by sshuck"]
+        ]}
+    ,{ name: "NoStarIsMultiplication", description: HH.div_
+        [HH.p_ [HH.text "submitted by taneb"]
+        ]}
+    ,{ name: "OverloadedBools", description: HH.div_
+        [HH.p_ [HH.text "submitted by taneb"]
+        ]}
+    ,{ name: "UndecidableBools", description: HH.div_
+        [HH.p_ [HH.text "submitted by Jappie"]
+        ]}
+    ,{ name: "Halting", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "RuntimeImports", description: HH.div_
+        [HH.p_ [HH.text "submitted by sshuck"]
+        ]}
+    ,{ name: "TypeLambdas", description: HH.div_
+        [HH.p_ [HH.text "submitted by taneb"]
+        ]}
+    ,{ name: "GeneralizedNewtypeIntegrating", description: HH.div_
+        [HH.p_ [HH.text "submitted by taneb"]
+        ]}
+    ,{ name: "UndecidableErrorMessages", description: HH.div_
+        [HH.p_ [HH.text "Arguably this is on by default."]
+        ,HH.p_ [HH.text "submitted by Alice"]
+        ]}
+    ,{ name: "NoBetaReduction", description: HH.div_
+        [HH.p_ [HH.text "submitted by taneb"]
+        ]}
+    ,{ name: "ShareAlike", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NoAttribution", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NonCommercial", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "DeponentTypes", description: HH.div_
+        [HH.p_ [HH.text "submitted by bradrn"]
+        ]}
+    ,{ name: "UnpredictableTypes", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "DodgySyntax", description: HH.div_
+        [HH.p_ [HH.text "submitted by sshuck"]
+        ]}
+    ,{ name: "UnsafeCharLits", description: HH.div_
+        [HH.p_ [HH.text "submitted by sshuck"]
+        ]}
+    ,{ name: "NoBottom", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "NumericPuns", description: HH.div_
+        [HH.p_ [HH.text "submitted by sshuck"]
+        ]}
+    ,{ name: "RecordFieldSynonyms", description: HH.div_
+        [HH.p_ [HH.text "submitted by lexi"]
+        ]}
+    ,{ name: "BestEffortCoercions", description: HH.div_
+        [HH.p_ [HH.text "submitted by sshuck"]
+        ]}
+    ,{ name: "TypeAntonyms", description: HH.div_
+        [HH.p_ [HH.text "submitted by Hécate"]
+        ]}
     ]
