@@ -3,6 +3,7 @@ module App.Extensions where
 import Prelude
 
 import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
 import Data.Array as Array
 import Data.Array ((:))
 import Data.String as String
@@ -28,6 +29,24 @@ parseString s =
             Nothing -> []
             Just v -> Array.cons (HH.code_ [HH.text v.head]) (go true v.tail)
     in HH.span_ (go true arr)
+
+proposal :: Int -> String -> String -> HH.PlainHTML -> HH.PlainHTML
+proposal id name url child = 
+    HH.div_ 
+        [HH.p_ 
+            [ HH.text $ "Mentioned in "
+            , HH.a 
+                [ HP.href url
+                , HP.target "_blank"
+                ]
+                [ HH.text $ "GHC Proposal " <> show id <> " : "
+                , parseString name
+                ]
+            , HH.text "."
+            ]
+        , HH.p_ [child]
+        ] 
+
 
 
 realExtensions :: Array Extension
@@ -174,6 +193,42 @@ realExtensions =
 
 submittedBy :: String -> Array HH.PlainHTML -> HH.PlainHTML
 submittedBy submitter desc = HH.div_ [HH.p_ desc, HH.p_ [HH.text ("submitted by " <> submitter)]]
+
+proposal448 = proposal 448 "Modern Scoped Type Variables" "https://github.com/ghc-proposals/ghc-proposals/tree/master/proposals/0448-type-variable-scoping.rst" 
+
+proposal285 = proposal 285 "No Implicit Binds" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0285-no-implicit-binds.rst"
+
+proposal193 = proposal 193 "Make `forall` a keyword" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0193-forall-keyword.rst"
+
+proposal111 = proposal 111 "Linear Types" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0111-linear-types.rst"
+
+proposal302 = proposal 302 "`\\cases` - Multi-way lambda expressions" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0302-cases.rst"
+
+proposal37 = proposal 37 "Hexadecimal Floats in Haskell" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0037-hexFloats.rst"
+
+proposal23 = proposal 23 "Overloaded Record Fields" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0023-overloaded-record-fields.rst"
+
+proposal583 = proposal 583 "HasField redesign" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0583-hasfield-redesign.rst"
+
+proposal409 = proposal 409 "Generalized, named, and exportable `default` declarations" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0409-exportable-named-default.rst"
+
+proposal242 = proposal 242 "Unsaturated Type Families" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0242-unsaturated-type-families.rst"
+
+proposal83 = proposal 83 "Embrace Type :: Type" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0083-no-type-in-type.rst"
+
+proposal143 = proposal 143 "Remove the * kind syntax" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0143-remove-star-kind.rst"
+
+proposal378 = proposal 378 "Design for Dependent Types" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0378-dependent-type-design.rst"
+
+proposal216 = proposal 216 "Qualified do" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0216-qualified-do.rst"
+
+proposal232 = proposal 232 "Ambiguous Type per-signature pragma" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0232-AmbiguousType-pragma.rst"
+
+proposal372 = proposal 372 "The GHC20XX process" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0372-ghc-extensions.rst"
+
+proposal652 = proposal 652 "Import shadowing" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0652-import-shadowing.rst"
+
+proposal631 = proposal 631 "Meaningful main return types" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0631-main-return-types.rst"
 
 fakeExtensions :: Array Extension 
 fakeExtensions =
@@ -395,112 +450,86 @@ fakeExtensions =
           [ parseString "The extension that allows customizing the implementation of if ... then ... else ... is `RebindableSyntax`. There's no way to qualify which `ifThenElse` is to be used, like you can with the `QualifiedDo` extension."
           ]
     }
-    , {name: "ExtendedForAllScope", description: HH.div_ 
-            [parseString "Proposed as a standalone extension split out of `ScopedTypeVariables`"
-            ]
+    , {name: "ExtendedForAllScope", description: proposal448 $
+        parseString "Proposed as a standalone extension split out of `ScopedTypeVariables`"
     }
-    , {name: "MethodTypeVariables", description: HH.div_
-        [ parseString "Proposed sub-extension of the `ScopedTypeVariables` breakup; never shipped"
-        ]
+    , {name: "MethodTypeVariables", description: proposal448 $
+        parseString "Proposed sub-extension of the `ScopedTypeVariables` breakup; never shipped"
     }
-    , {name: "ScopedForAlls", description: HH.div_
-        [ parseString "Intermediate design name, renamed to `ExtendedForAllScope`, never shipped"
-        ]
+    , {name: "ScopedForAlls", description: proposal448 $
+        parseString "Intermediate design name, renamed to `ExtendedForAllScope`, never shipped"
     }
-    , {name: "RumpEndOfOldScopedTypeVariables", description: HH.div_
-        [ parseString "Rhetorical name used to argue against keeping the leftover `ScopedTypeVariables` behavior, never a real extension"
-        ]
+    , {name: "RumpEndOfOldScopedTypeVariables", description: proposal448 $
+        parseString "Rhetorical name used to argue against keeping the leftover `ScopedTypeVariables` behavior, never a real extension"
     }
-    , {name: "ImplicitForAll", description: HH.div_ 
-        [parseString "Proposed sub-extension never shipped"
-        ]
+    , {name: "ImplicitForAll", description: proposal285 $
+        parseString "Proposed sub-extension never shipped"
     }
-    , {name: "PatternSignatureBinds", description: HH.div_
-        [ parseString "Proposed sub-extension (with `NoPatternSignatureBinds`), never shipped"
-        ]
+    , {name: "PatternSignatureBinds", description: proposal285 $
+        parseString "Proposed sub-extension (with `NoPatternSignatureBinds`), never shipped"
     }
-    , {name: "ImplicitBinds", description: HH.div_
-        [ parseString "Strawman combined name floated in `Alternatives`, never shipped"
-        ]
+    , {name: "ImplicitBinds", description: proposal285 $
+        parseString "Strawman combined name floated in `Alternatives`, never shipped"
+        
     }
-    , {name: "KeywordForall", description: HH.div_ 
-        [ parseString "Alternative 'hide behind an extension' option, rejected (forall became a keyword unconditionally)"
-        ]
+    , {name: "KeywordForall", description: proposal193 $
+        parseString "Alternative 'hide behind an extension' option, rejected (forall became a keyword unconditionally)"
     }
-    , {name: "LinearArrows", description: HH.div_
-        [ parseString "Rejected alternative name, shipped as `LinearTypes`"
-        ]
+    , {name: "LinearArrows", description: proposal111 $
+        parseString "Rejected alternative name, shipped as `LinearTypes`"
     }
-    , {name: "LinearFunctions", description: HH.div_
-        [ parseString "Rejected alternative name, shipped as `LinearTypes`"
-        ]
+    , {name: "LinearFunctions", description: proposal111 $
+        parseString "Rejected alternative name, shipped as `LinearTypes`"
     }
-    , {name: "LinearFunctionTypes", description: HH.div_
-        [ parseString "Rejected alternative name; shipped as `LinearTypes`"
-        ]
+    , {name: "LinearFunctionTypes", description: proposal111 $
+        parseString "Rejected alternative name; shipped as `LinearTypes`"
     }
-    , {name: "LinearityKind", description: HH.div_ 
-        [ parseString "Speculative name for a notional future extension, never shipped"
-        ]
+    , {name: "LinearityKind", description: proposal111 $
+        parseString "Speculative name for a notional future extension, never shipped"
     }
-    , {name: "LambdaCases", description: HH.div_
-        [ parseString "Proposed alternative new extension, `LambdaCase` was extended instead"
-        ]
+    , {name: "LambdaCases", description: proposal302 $
+        parseString "Proposed alternative new extension, `LambdaCase` was extended instead"
     }
-    , {name: "ExtendedCase", description: HH.div_ 
-        [parseString "Proposed in alternative design, never shipped"
-        ]
+    , {name: "ExtendedCase", description: proposal302 $
+        parseString "Proposed as alternative design, never shipped"
     }
-    , {name: "HexadecimalFloats", description: HH.div_
-        [ parseString "Proposed extension name, shipped as `HexFloatLiterals`"
-        ]
+    , {name: "HexadecimalFloats", description: proposal37 $
+        parseString "Proposed extension name, shipped as `HexFloatLiterals`"
     }
-    , {name: "OverloadedRecordFields", description: HH.div_
-        [ parseString "Proposed umbrella extension, never shipped under this name (functionality split into `HasField`/`DuplicateRecordFields`)"
-        ]
+    , {name: "OverloadedRecordFields", description: proposal23 $
+        parseString "Proposed umbrella extension, never shipped under this name (functionality split into `HasField`/`DuplicateRecordFields`)"
     }
-    , {name: "MaybeFieldSelectors", description: HH.div_
-        [ parseString "Suggested extension; never shipped"
-        ]
+    , {name: "MaybeFieldSelectors", description: proposal583 $
+        parseString "Suggested extension; never shipped"
     }
-    , {name: "ImportedDefaults", description: HH.div_
-        [ parseString "Originally a separate extension in this proposal, dropped before acceptance"
-        ]
+    , {name: "ImportedDefaults", description: proposal409 $
+        parseString "Originally a separate extension in this proposal, dropped before acceptance"
     }
-    , {name: "UnsaturatedTypeFamilies", description: HH.div_
-        [ parseString "Accepted experimentally but never released"
-        ]
+    , {name: "UnsaturatedTypeFamilies", description: proposal242 $
+        parseString "Accepted experimentally but never released"
     }
-    , {name: "TypeColonOperators", description: HH.div_
-        [ parseString "Proposed in ``Alternatives`, not pursued"
-        ]
+    , {name: "TypeColonOperators", description: proposal83 $
+        parseString "Proposed in `Alternatives`, not pursued"
     }
-    , {name: "DependentHaskell", description: HH.div_
-        [parseString "Aspirational future-direction flag, never shipped"
-        ]
+    , {name: "DependentHaskell", description: proposal143 $
+        parseString "Aspirational future-direction flag, never shipped"
     }
-    , {name: "DependentTypes", description: HH.div_
-        [ parseString "Aspirational opt-in flag in a design sketch, never shipped"
-        ]
+    , {name: "DependentTypes", description: proposal378 $
+        parseString "Aspirational opt-in flag in a design sketch, never shipped"
     }
-    , {name: "OverloadedDo", description: HH.div_ 
-        [ parseString "`QualifiedDo` shipped instead"
-        ]
+    , {name: "OverloadedDo", description: proposal216 $
+        parseString "`QualifiedDo` shipped instead"
     }
-    , {name: "AmbiguousTypesPragma", description: HH.div_ 
-        [ parseString "Floated as a module-wide -X form of the `{-# AMBIGUOUS #-}` pragma, accepted but not implemented as of writing"
-        ]
+    , {name: "AmbiguousTypesPragma", description: proposal232 $
+        parseString "Floated as a module-wide -X form of the `{-# AMBIGUOUS #-}` pragma, accepted but not implemented as of writing"
     }
-    , {name: "ExtendedTypeClasses", description: HH.div_
-        [ parseString "Illustrative name for a hypothetical single extension bundling `MultiParamTypeClasses` and `FlexibleInstances`, never a real extension"
-        ]
+    , {name: "ExtendedTypeClasses", description: proposal372 $
+        parseString "Illustrative name for a hypothetical single extension bundling `MultiParamTypeClasses` and `FlexibleInstances`, never a real extension"
     }
-    , {name: "ImportShadowing", description: HH.div_ 
-        [parseString "Accepted (2024/08/15) but not implemented as of writing"
-        ]
+    , {name: "ImportShadowing", description: proposal652 $
+        parseString "Accepted (2024/08/15) but not implemented as of writing"
     }
-    , { name: "MeaningfulMainReturn", description: HH.div_
-        [ parseString "Accepted (2024-05-21) but not implemented as of writing"
-        ]
+    , { name: "MeaningfulMainReturn", description: proposal631 $
+        parseString "Accepted (2024-05-21) but not implemented as of writing"
     }
     ]
