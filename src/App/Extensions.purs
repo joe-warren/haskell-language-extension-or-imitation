@@ -148,7 +148,7 @@ realExtensions =
     ,{ name :"StrictData", description : quote' "Treat datatype fields as strict by default."}
     ,{ name :"TemplateHaskell", description : quote' "Allow Template Haskell's splice and quotation syntax."}
     ,{ name :"TemplateHaskellQuotes", description : quote' "Allow Template Haskell's quotation syntax."}
-    ,{ name :"TraditionalRecordSyntax", description : quote' "Allow traditional record syntax (e.g. `C {f : x}`)."}
+    ,{ name :"TraditionalRecordSyntax", description : quote' "Allow traditional record syntax (e.g. `C {f = x}`)."}
     ,{ name :"TransformListComp", description : quote' "Allow generalised list comprehension syntax."}
     ,{ name :"Trustworthy", description : quote' "Enable the Safe Haskell Trustworthy mode."}
     ,{ name :"TupleSections", description : quote' "Allow use of tuple section synxtax."}
