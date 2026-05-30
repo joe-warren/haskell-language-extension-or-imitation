@@ -118,6 +118,8 @@ renderCurrentGame state =
                     [ HE.onClick \_ -> NextQuestion ]
                     [ HH.text "Next" ]
             ]
+        , 
+        HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.p_ [s.description]) <$> realExtensions
     ]
 
 render :: forall cs m. State -> H.ComponentHTML Action cs m

@@ -4,6 +4,9 @@ import Prelude
 
 import Halogen.HTML as HH
 import Data.Array as Array
+import Data.Array ((:))
+import Data.String as String
+import Data.Maybe (Maybe (..))
 
 type Extension = 
     { name :: String
@@ -13,7 +16,19 @@ type Extension =
 quote :: HH.PlainHTML -> HH.PlainHTML
 quote s = HH.span_ [HH.text "“", s, HH.text "”"]
 
-quote' = quote <<<HH.text 
+quote' = quote <<< parseString 
+
+parseString :: String -> HH.PlainHTML
+parseString s = 
+    let arr = String.split (String.Pattern "`") s
+        go true arr = case Array.uncons arr of 
+            Nothing -> []
+            Just v -> Array.cons (HH.text v.head) (go false v.tail)
+        go false arr = case Array.uncons arr of
+            Nothing -> []
+            Just v -> Array.cons (HH.code_ [HH.text v.head]) (go true v.tail)
+    in HH.span_ (go true arr)
+
 
 realExtensions :: Array Extension
 realExtensions = 
@@ -94,7 +109,7 @@ realExtensions =
     ,{ name :"NegativeLiterals", description : quote' "Allow negative numeric literal syntax."}
     ,{ name :"NondecreasingIndentation", description : quote' "Allow nested contexts to be at the same indentation level as its enclosing context."}
     ,{ name :"NPlusKPatterns", description : quote' "Allow use of n+k patterns."}
-    ,{ name :"NullaryTypeClasses", description : quote' "Deprecated, does nothing. nullary type classes are now enabled using MultiParamTypeClasses."}
+    ,{ name :"NullaryTypeClasses", description : quote' "Deprecated, does nothing. nullary type classes are now enabled using `MultiParamTypeClasses`."}
     ,{ name :"NumDecimals", description : quote' "Allow use of scientific notation syntax for integer literals."}
     ,{ name :"NumericUnderscores", description : quote' "Allow underscores in numeric literals."}
     ,{ name :"OrPatterns", description : quote' "Enable or-patterns."}
@@ -133,7 +148,7 @@ realExtensions =
     ,{ name :"StrictData", description : quote' "Treat datatype fields as strict by default."}
     ,{ name :"TemplateHaskell", description : quote' "Allow Template Haskell's splice and quotation syntax."}
     ,{ name :"TemplateHaskellQuotes", description : quote' "Allow Template Haskell's quotation syntax."}
-    ,{ name :"TraditionalRecordSyntax", description : quote' "Allow traditional record syntax (e.g. C {f : x})."}
+    ,{ name :"TraditionalRecordSyntax", description : quote' "Allow traditional record syntax (e.g. `C {f : x}`)."}
     ,{ name :"TransformListComp", description : quote' "Allow generalised list comprehension syntax."}
     ,{ name :"Trustworthy", description : quote' "Enable the Safe Haskell Trustworthy mode."}
     ,{ name :"TupleSections", description : quote' "Allow use of tuple section synxtax."}
