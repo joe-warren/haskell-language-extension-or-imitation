@@ -110,10 +110,10 @@ realExtensions =
     ,{ name :"InstanceSigs", description : quote' "Allow type signatures to be written for instance methods."}
     ,{ name :"InterruptibleFFI", description : quote' "Allow interruptible FFI imports."}
     ,{ name :"KindSignatures", description : quote' "Allow kind signatures to be given for types."}
-    ,{ name :"LambdaCase", description : quote' "Allow \\case expressions."}
+    ,{ name :"LambdaCase", description : quote' "Allow `\\case` expressions."}
     ,{ name :"LexicalNegation", description : quote' "Use whitespace to determine whether the minus sign stands for negation or subtraction."}
     ,{ name :"LiberalTypeSynonyms", description : quote' "Relax many of Haskell 98's rules on type synonym definitions."}
-    ,{ name :"LinearTypes", description : quote' "Allow writing of linear arrow types. Implies MonoLocalBinds."}
+    ,{ name :"LinearTypes", description : quote' "Allow writing of linear arrow types. Implies `MonoLocalBinds`."}
     ,{ name :"ListTuplePuns", description : quote' "Enable punning for list, tuple and sum types."}
     ,{ name :"MagicHash", description : quote' "Allow # as a postfix modifier on identifiers."}
     ,{ name :"MonadComprehensions", description : quote' "Allow list comprehension syntax to be used at monads other than List."}
@@ -134,9 +134,9 @@ realExtensions =
     ,{ name :"OrPatterns", description : quote' "Enable or-patterns."}
     ,{ name :"OverlappingInstances", description : quote' "Allow definition of overlapping instances."}
     ,{ name :"OverloadedLabels", description : quote' "Allow overloaded label syntax."}
-    ,{ name :"OverloadedLists", description : quote' "Desugar list syntax via the IsList class."}
-    ,{ name :"OverloadedRecordDot", description : quote' "Allow . to be used for record field access."}
-    ,{ name :"OverloadedRecordUpdate", description : quote' "Allow . syntax in record updates"}
+    ,{ name :"OverloadedLists", description : quote' "Desugar list syntax via the `IsList` class."}
+    ,{ name :"OverloadedRecordDot", description : quote' "Allow `.` to be used for record field access."}
+    ,{ name :"OverloadedRecordUpdate", description : quote' "Allow `.` syntax in record updates"}
     ,{ name :"OverloadedStrings", description : quote' "Desugar string literals via IsString class."}
     ,{ name :"PackageImports", description : quote' "Allow package-qualified import syntax."}
     ,{ name :"ParallelListComp", description : quote' "Allow parallel list comprehension syntax."}
@@ -153,7 +153,7 @@ realExtensions =
     ,{ name :"RankNTypes", description : quote' "Allow types of rank greater than one."}
     ,{ name :"RebindableSyntax", description : quote' "Allow rebinding of builtin syntax."}
     ,{ name :"RecordWildCards", description : quote' "Allow use of record wildcard syntax."}
-    ,{ name :"RecursiveDo", description : quote' "Allow recursive do (e.g. mdo) notation."}
+    ,{ name :"RecursiveDo", description : quote' "Allow recursive do (e.g. `mdo`) notation."}
     ,{ name :"RelaxedPolyRec", description : quote' "Generalised typing of mutually recursive bindings."}
     ,{ name :"RequiredTypeArguments", description : quote' "Allow use of required type argument syntax in terms."}
     ,{ name :"RoleAnnotations", description : quote' "Allow role annotation syntax."}
@@ -161,7 +161,7 @@ realExtensions =
     ,{ name :"ScopedTypeVariables", description : quote' "Lexically scoped explicitly-introduced type variables."}
     ,{ name :"StandaloneDeriving", description : quote' "Allow standalone instance deriving declarations."}
     ,{ name :"StandaloneKindSignatures", description : quote' "Allow standalone kind signature declarations."}
-    ,{ name :"StarIsType", description : quote' "Treat * as Data.Kind.Type."}
+    ,{ name :"StarIsType", description : quote' "Treat `*` as Data.Kind.Type."}
     ,{ name :"StaticPointers", description : quote' "Allow static syntax."}
     ,{ name :"Strict", description : quote' "Make bindings in the current module strict by default."}
     ,{ name :"StrictData", description : quote' "Treat datatype fields as strict by default."}
@@ -418,7 +418,7 @@ fakeExtensions =
     ,{ name: "StrictPolyRec", description: submittedBy "bradrn" []}
     ,{ name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
     ,{ name: "VisibleForall", description: proposal281 $ submittedBy "Alice"
-        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`, `VisibleForall was proposed as an alternate name."
+        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`, `VisibleForall was proposed as an alternate name"
         ]
     }
     , { name: "RecursiveTypes", description: submittedBy "Alice" []}
@@ -486,7 +486,7 @@ fakeExtensions =
         parseString "Rejected alternative name, shipped as `LinearTypes`"
     }
     , {name: "LinearFunctionTypes", description: proposal111 $
-        parseString "Rejected alternative name; shipped as `LinearTypes`"
+        parseString "Rejectedalternative name; shipped as `LinearTypes`"
     }
     , {name: "LinearityKind", description: proposal111 $
         parseString "Speculative name for a notional future extension, never shipped"
