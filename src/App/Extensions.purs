@@ -194,6 +194,10 @@ realExtensions =
 submittedBy :: String -> Array HH.PlainHTML -> HH.PlainHTML
 submittedBy submitter desc = HH.div_ [HH.p_ desc, HH.p_ [HH.text ("submitted by " <> submitter)]]
 
+proposal281 = proposal 281 "Visible `forall` in types of terms, and types in terms" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0281-visible-forall.rst"
+
+proposal282 = proposal 282 "Record Dot Syntax" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0282-record-dot-syntax.rst"
+
 proposal448 = proposal 448 "Modern Scoped Type Variables" "https://github.com/ghc-proposals/ghc-proposals/tree/master/proposals/0448-type-variable-scoping.rst" 
 
 proposal285 = proposal 285 "No Implicit Binds" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0285-no-implicit-binds.rst"
@@ -247,7 +251,7 @@ fakeExtensions =
             [ HH.p_ [parseString "The extension that enables arrow syntax is actually called`Arrows``."]
             ]
     }
-    , { name: "RecordDotSyntax", description: submittedBy "mniip"
+    , { name: "RecordDotSyntax", description: proposal282 $ submittedBy "mniip"
             [ parseString "The extensions comprising record dot syntax are actually called `OverloadedRecordDot` and `OverloadedRecordUpdate.`"
             ]
     }
@@ -413,8 +417,8 @@ fakeExtensions =
     ,{ name: "RankNFile", description: submittedBy "mniip" [] }
     ,{ name: "StrictPolyRec", description: submittedBy "bradrn" []}
     ,{ name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
-    ,{ name: "VisibleForall", description: submittedBy "Alice"
-        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`"
+    ,{ name: "VisibleForall", description: proposal281 $ submittedBy "Alice"
+        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`, `VisibleForall was proposed as an alternate name."
         ]
     }
     , { name: "RecursiveTypes", description: submittedBy "Alice" []}
