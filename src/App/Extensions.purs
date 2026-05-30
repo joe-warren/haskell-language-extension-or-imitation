@@ -177,138 +177,138 @@ submittedBy submitter desc = HH.div_ [HH.p_ desc, HH.p_ [HH.text ("submitted by 
 
 fakeExtensions :: Array Extension 
 fakeExtensions =
-    [ { name: "ApplicativeDon't", description: HH.text "It's ApplicativeDo" }
-    , { name: "MagicCrack", description: HH.text "You're probably thinking of MagicHash" }
+    [ { name: "ApplicativeDon't", description: parseString "It's `ApplicativeDo`" }
+    , { name: "MagicCrack", description: parseString "You're probably thinking of `MagicHash`" }
     , { name: "ApplicativeComprehensions", description: submittedBy "Reed" []}
     , { name: "UnboxedNewtypes", description: submittedBy "Reed" []}
     , { name: "UnboxedDatatypes", description: submittedBy "Reed" []}
     , { name: "DeriveTypeable", description: submittedBy "Reed" []}
     , { name: "HexLiterals", description: submittedBy "Reed"
-            [ HH.p_ [HH.text "BinaryLiterals is real, but this isn't"]
+            [ HH.p_ [parseString "BinaryLiterals is real, but this isn't"]
             ]
     }
     , { name: "NonDecreasingComplexity", description: submittedBy "edmundnoble" [] }
     , { name: "ArrowSyntax", description: submittedBy "mniip"
-            [ HH.p_ [HH.text "The extension that enables arrow syntax is actually called Arrows."]
+            [ HH.p_ [parseString "The extension that enables arrow syntax is actually called`Arrows``."]
             ]
     }
     , { name: "RecordDotSyntax", description: submittedBy "mniip"
-            [ HH.text "The extensions comprising record dot syntax are actually called OverloadedRecordDot and OverloadedRecordUpdate."
+            [ parseString "The extensions comprising record dot syntax are actually called `OverloadedRecordDot` and `OverloadedRecordUpdate.`"
             ]
     }
     , { name: "ExtendedLists", description: submittedBy "mniip" 
-        [HH.text "The real extensions are: OverloadedLists for overloading the list literal syntax, ParallelListComp for extending the comprehension syntax with zips, and TransformListComp for extending the comprehension syntax with \"group by\" and arbitrary processing steps."
+        [parseString "The real extensions are: `OverloadedLists` for overloading the list literal syntax, `ParallelListComp` for extending the comprehension syntax with zips, and `TransformListComp` for extending the comprehension syntax with \"group by\" and arbitrary processing steps."
         ]
     }
     , { name: "InjectiveTypeFamilies", description: submittedBy "mniip" 
-        [HH.text "The extension that allows specifying injectivity annotations for type families is actually called TypeFamilyDependencies."] 
+        [parseString "The extension that allows specifying injectivity annotations for type families is actually called `TypeFamilyDependencies`."] 
     }
     , { name: "DecreasingIndentation", description:  submittedBy "mniip" 
-        [HH.text "The extension that relaxes indentation requirements is actually called NondecreasingIndentation."
+        [parseString "The extension that relaxes indentation requirements is actually called `NondecreasingIndentation``."
         ]
     }
     , { name: "FlexibleClasses", description:  submittedBy "mniip"
-        [ HH.text "The extensions that relax requirements on typeclass use are actually called FlexibleContexts and FlexibleInstances."
+        [ parseString "The extensions that relax requirements on typeclass use are actually called `FlexibleContexts` and `FlexibleInstances`."
         ] 
     }
     , { name: "FlexibleConstraints", description:  submittedBy "mniip" 
-        [ HH.text "The extensions that relax requirements on typeclass use are actually called FlexibleContexts and FlexibleInstances."
+        [ parseString "The extensions that relax requirements on typeclass use are actually called `FlexibleContexts` and `FlexibleInstances`."
         ]
     }
     , { name: "UndecidableConstraints", description:  submittedBy "mniip" 
-        [HH.text "The extension that disables termination checking for constraint resolution is actually called UndecidableInstances."
+        [parseString "The extension that disables termination checking for constraint resolution is actually called `UndecidableInstances`."
         ]
     }
     , { name: "LiberalInstances", description: submittedBy "mniip"
-        [HH.text "The real extensions are: FlexibleInstances for relaxed rules for instances, TypeSynonymInstances allowing use of type synonyms in instances, and LiberalTypeSynonyms for deferring impredicativity and partial application checks until after type synonyms are expanded."
+        [parseString "The real extensions are: FlexibleInstances for relaxed rules for instances, `TypeSynonymInstances` allowing use of type synonyms in instances, and `LiberalTypeSynonyms` for deferring impredicativity and partial application checks until after type synonyms are expanded."
         ]
     }    
     , { name: "QuantifiedTypes", description: submittedBy "mniip" 
-        [ HH.text "The extension that enables the forall quantifier in types is ExplicitForAll or RankNTypes. The extension that enables the forall quantifier in constraints is QuantifiedConstraints."
+        [ parseString "The extension that enables the forall quantifier in types is `ExplicitForAll` or `RankNTypes`. The extension that enables the forall quantifier in constraints is `QuantifiedConstraints`."
         ]
     } 
     , { name: "QualifiedTypes", description: submittedBy "mniip" 
-        [ HH.text "There's no such thing as a \"qualified\" type."
+        [ parseString "There's no such thing as a \"qualified\" type."
         ] } 
     , { name: "UniversalQuantification", description: submittedBy "mniip" 
-        [ HH.text "The \"universal\" quantifier is the forall quantifier, enabled by ExplicitForAll or RankNTypes. The extension that allows the use of the forall quantifier in datatype definitions is actually called ExistentialQuantification."
+        [ parseString "The \"universal\" quantifier is the forall quantifier, enabled by `ExplicitForAll` or `RankNTypes`. The extension that allows the use of the forall quantifier in datatype definitions is actually called `ExistentialQuantification`."
         ]
     } 
     , { name: "MultiParamTypeFamilies", description: submittedBy "mniip"
-        [ HH.text "The real extension is MultiParamTypeClasses. Type families (whenever enabled) can always have multiple parameters."
+        [ parseString "The real extension is `MultiParamTypeClasses`. Type families (whenever enabled) can always have multiple parameters."
         ]
     }
     , { name: "NullaryTypeFamilies", description: submittedBy "mniip" 
-        [HH.text "The real extension is NullaryTypeClasses. Type families (whenever enabled) can always have no arguments."
+        [parseString "The real extension is `NullaryTypeClasses`. Type families (whenever enabled) can always have no arguments."
         ]
     } 
     , { name: "DependentKinds", description: submittedBy "mniip"
-        [HH.text "Kinding (types of types) is always dependently typed in GHC, though this can only be observed if PolyKinds and DataKinds are in use."
+        [parseString "Kinding (types of types) is always dependently typed in GHC, though this can only be observed if `PolyKinds` and `DataKinds` are in use."
         ]
     } 
     , { name: "KindOperators", description: submittedBy "mniip" 
-        [HH.text "The real extension is called TypeOperators. Kinds are not distinguished from types and can use operators as well when enabled."
+        [parseString "The real extension is called `TypeOperators`. Kinds are not distinguished from types and can use operators as well when enabled."
         ] } 
     , { name: "DeriveEq", description: submittedBy "mniip" 
-        [ HH.text "It is always possible to derive Eq. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive `Eq`. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveOrd", description: submittedBy "mniip"
-        [ HH.text "It is always possible to derive Ord. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive Ord. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveShow", description: submittedBy "mniip"
-        [ HH.text "It is always possible to derive Show. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive Show. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveRead", description: submittedBy "mniip"
-        [ HH.text "It is always possible to derive Read. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive Read. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveEnum", description: submittedBy "mniip"
-        [ HH.text "It is always possible to derive Enum. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive Enum. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveBounded", description: submittedBy "mniip" 
-        [ HH.text "It is always possible to derive Bounded. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive Bounded. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] 
     }
     , { name: "DeriveIx", description: submittedBy "mniip" 
-        [ HH.text "It is always possible to derive Ix. Real extensions that cover additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "It is always possible to derive Ix. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ]
     }
     , { name: "DeriveCoercible", description: submittedBy "mniip" 
-        [ HH.text "Coercible is a compiler built-in, for which no instances can be defined (nor derived). Real typeclass-specific deriving extensions are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "Coercible is a compiler built-in, for which no instances can be defined (nor derived). Real typeclass-specific deriving extensions are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] 
     } 
     , { name: "DeriveMonad", description: submittedBy "mniip" 
-        [ HH.text "A Monad instance cannot be derived based on a datatype's structure. Real extensions that do enable deriving for additional typeclasses are called: DeriveGeneric, DeriveFunctor, DeriveFoldable, DeriveTraversable, DeriveLift, and DeriveDataTypeable."
+        [ parseString "A Monad instance cannot be derived based on a datatype's structure. Real extensions that do enable deriving for additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ]
     } 
     , { name: "DeriveNewtype", description: submittedBy "mniip" 
-        [HH.text "The extension that allows deriving instances of most classes for a newtype is actually called GeneralisedNewtypeDeriving."
+        [parseString "The extension that allows deriving instances of most classes for a newtype is actually called `GeneralisedNewtypeDeriving`."
         ]
     } 
     , { name: "UnboxedLiterals", description: submittedBy "mniip" 
-        [ HH.text "The syntax for literals of unboxed types, such as 1# :: Int# is actually enabled as part of the MagicHash extension."
+        [ parseString "The syntax for literals of unboxed types, such as `1# :: Int#` is actually enabled as part of the `MagicHash` extension."
         ] } 
     , { name: "UnliftedCoercions", description: submittedBy "mniip" 
-        [ HH.text "GHC can choose to use lifted or unlifted representations for coercions, but the user generally has no control over this."
+        [ parseString "GHC can choose to use lifted or unlifted representations for coercions, but the user generally has no control over this."
         ] } 
     , { name: "ListSections", description: submittedBy "mniip" 
-        [ HH.text "The extension that allows omitting an element of a tuple to create a tupling operator section is called TupleSections. There is no analogous extension for lists."
+        [ parseString "The extension that allows omitting an element of a tuple to create a tupling operator section is called `TupleSections`. There is no analogous extension for lists."
         ] } 
     , { name: "WildcardImports", description: submittedBy "mniip"
-        [HH.text "A wildcard import (import X rather than import X (x)) is part of Haskell98 and is always available. A similar sounding real extension is RecordWildCards."
+        [parseString "A wildcard import (import X rather than import X (x)) is part of `Haskell98` and is always available. A similar sounding real extension is `RecordWildCards`."
         ] 
     } 
     , { name: "TypeSynonyms", description: submittedBy "mniip" 
-        [ HH.text "Type synonyms type X = ... are part of Haskell98 and are always available."
+        [ parseString "Type synonyms (`type X = ...`) are part of `Haskell98` and are always available."
         ] } 
     , { name: "ExplicitArguments", description: submittedBy "mniip" 
-        [HH.text " The extension that allows explicit type-level arguments is actually called TypeApplications. The extension that allows making such parameters required is actually called RequiredTypeArguments."
+        [parseString " The extension that allows explicit type-level arguments is actually called `TypeApplications`. The extension that allows making such parameters required is actually called `RequiredTypeArguments`."
         ]
     } 
     , { name: "CompletePatterns", description: submittedBy "mniip" 
-        [HH.text "{-# COMPLETE ... #-} pragmas for pattern synonyms are actually always available whenever PatternSynonyms itself is enabled."
+        [parseString "`{-# COMPLETE ... #-}` pragmas for pattern synonyms are actually always available whenever `PatternSynonyms` itself is enabled."
     ] } 
     , { name: "RecursiveLet", description: submittedBy "mniip" 
-        [HH.text "The ability to write (mutually) recursive bindings in a let is part of Haskell98 and is always enabled."
+        [parseString "The ability to write (mutually) recursive bindings in a let is part of `Haskell98` and is always enabled."
         ]
     } 
     ,{ name: "OverloadedDecimalDot", description: submittedBy "lexi" [] }
@@ -339,7 +339,7 @@ fakeExtensions =
     ,{ name: "TypeLambdas", description: submittedBy "taneb" [] }
     ,{ name: "GeneralizedNewtypeIntegrating", description: submittedBy "taneb" [] }
     ,{ name: "UndecidableErrorMessages", description: submittedBy "Alice"
-        [HH.p_ [HH.text "Some people would claim this is on by default."]
+        [HH.p_ [parseString "Some people would claim this is on by default."]
         ]
     }
     ,{ name: "NoBetaReduction", description: submittedBy "taneb" [] }
@@ -359,40 +359,148 @@ fakeExtensions =
     ,{ name: "StrictPolyRec", description: submittedBy "bradrn" []}
     ,{ name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
     ,{ name: "VisibleForall", description: submittedBy "Alice"
-        [ HH.text "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`"
+        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`"
         ]
     }
     , { name: "RecursiveTypes", description: submittedBy "Alice" []}
     , { name: "ExistentialTypes", description: submittedBy "mniip" 
-        [ HH.text "The extension that allows defining existential datatypes is actually called ExistentialQuantification."
+        [ parseString "The extension that allows defining existential datatypes is actually called `ExistentialQuantification`."
         ]
     }
     , { name: "ImplicitParameters", description: submittedBy "mniip"
-        [ HH.text "The extension introducing implicit parameters (?x :: X) is actually called ImplicitParams."
+        [ parseString "The extension introducing implicit parameters (?x :: X) is actually called `ImplicitParams`."
         ]
     } 
     , { name: "ClosedTypeFamilies", description: submittedBy "mniip"
-        [ HH.text "The ability to write a closed type family (type family ... where) is always available whenever TypeFamilies are themselves enabled."
+        [ parseString "The ability to write a closed type family (type family ... where) is always available whenever `TypeFamilies` are themselves enabled."
         ]
     }
     , { name: "FlexibleSuperClasses", description: submittedBy "mniip" 
-        [ HH.text "Real extensions that relax requirements on typeclass use are FlexibleContexts and FlexibleInstances. A similar sounding real extension is UndecidableSuperClasses."
+        [ parseString "Real extensions that relax requirements on typeclass use are `FlexibleContexts` and `FlexibleInstances`. A similar sounding real extension is `UndecidableSuperClasses`."
         ]
     }
     , { name: "UndecidableTypeFamilies", description: submittedBy "mniip"
-          [ HH.text "Disabling termination checking for type family reduction is actually included in UndecidableInstances. Type family equations are considered \"instances\"."
+          [ parseString "Disabling termination checking for type family reduction is actually included in `UndecidableInstances`. Type family equations are considered \"instances\"."
           ]
     }
     , { name: "LetPolymorphism", description: submittedBy "mniip"
-          [ HH.text "Writing a polymorphic binding with a type signature in a let is part of Haskell98 and is always enabled. The extension that controls whether bindings without a type signature automatically become polymorphic is actually called MonoLocalBinds."
+          [ parseString "Writing a polymorphic binding with a type signature in a let is part of `Haskell98` and is always enabled. The extension that controls whether bindings without a type signature automatically become polymorphic is actually called `MonoLocalBinds`."
           ]
     }
     , { name: "PedanticBottoms", description: submittedBy "mniip"
-          [ HH.text "The optimizer's treatment of bottoms is controlled by a -fpedantic-bottoms flag, which can be specified in a {-# OPTIONS_GHC ... #-} pragma. It is not a language extension."
+          [ parseString "The optimizer's treatment of bottoms is controlled by a -fpedantic-bottoms flag, which can be specified in a `{-# OPTIONS_GHC ... #-}` pragma. It is not a language extension."
           ]
     }
     , { name: "QualifiedIf", description: submittedBy "mniip"
-          [ HH.text "The extension that allows customizing the implementation of if ... then ... else ... is RebindableSyntax. There's no way to qualify which ifThenElse is to be used, like you can with the QualifiedDo extension."
+          [ parseString "The extension that allows customizing the implementation of if ... then ... else ... is `RebindableSyntax`. There's no way to qualify which `ifThenElse` is to be used, like you can with the `QualifiedDo` extension."
           ]
+    }
+    , {name: "ExtendedForAllScope", description: HH.div_ 
+            [parseString "Proposed as a standalone extension split out of `ScopedTypeVariables`"
+            ]
+    }
+    , {name: "MethodTypeVariables", description: HH.div_
+        [ parseString "Proposed sub-extension of the `ScopedTypeVariables` breakup; never shipped"
+        ]
+    }
+    , {name: "ScopedForAlls", description: HH.div_
+        [ parseString "Intermediate design name, renamed to `ExtendedForAllScope`, never shipped"
+        ]
+    }
+    , {name: "RumpEndOfOldScopedTypeVariables", description: HH.div_
+        [ parseString "Rhetorical name used to argue against keeping the leftover `ScopedTypeVariables` behavior, never a real extension"
+        ]
+    }
+    , {name: "ImplicitForAll", description: HH.div_ 
+        [parseString "Proposed sub-extension never shipped"
+        ]
+    }
+    , {name: "PatternSignatureBinds", description: HH.div_
+        [ parseString "Proposed sub-extension (with `NoPatternSignatureBinds`), never shipped"
+        ]
+    }
+    , {name: "ImplicitBinds", description: HH.div_
+        [ parseString "Strawman combined name floated in `Alternatives`, never shipped"
+        ]
+    }
+    , {name: "KeywordForall", description: HH.div_ 
+        [ parseString "Alternative 'hide behind an extension' option, rejected (forall became a keyword unconditionally)"
+        ]
+    }
+    , {name: "LinearArrows", description: HH.div_
+        [ parseString "Rejected alternative name, shipped as `LinearTypes`"
+        ]
+    }
+    , {name: "LinearFunctions", description: HH.div_
+        [ parseString "Rejected alternative name, shipped as `LinearTypes`"
+        ]
+    }
+    , {name: "LinearFunctionTypes", description: HH.div_
+        [ parseString "Rejected alternative name; shipped as `LinearTypes`"
+        ]
+    }
+    , {name: "LinearityKind", description: HH.div_ 
+        [ parseString "Speculative name for a notional future extension, never shipped"
+        ]
+    }
+    , {name: "LambdaCases", description: HH.div_
+        [ parseString "Proposed alternative new extension, `LambdaCase` was extended instead"
+        ]
+    }
+    , {name: "ExtendedCase", description: HH.div_ 
+        [parseString "Proposed in alternative design, never shipped"
+        ]
+    }
+    , {name: "HexadecimalFloats", description: HH.div_
+        [ parseString "Proposed extension name, shipped as `HexFloatLiterals`"
+        ]
+    }
+    , {name: "OverloadedRecordFields", description: HH.div_
+        [ parseString "Proposed umbrella extension, never shipped under this name (functionality split into `HasField`/`DuplicateRecordFields`)"
+        ]
+    }
+    , {name: "MaybeFieldSelectors", description: HH.div_
+        [ parseString "Suggested extension; never shipped"
+        ]
+    }
+    , {name: "ImportedDefaults", description: HH.div_
+        [ parseString "Originally a separate extension in this proposal, dropped before acceptance"
+        ]
+    }
+    , {name: "UnsaturatedTypeFamilies", description: HH.div_
+        [ parseString "Accepted experimentally but never released"
+        ]
+    }
+    , {name: "TypeColonOperators", description: HH.div_
+        [ parseString "Proposed in ``Alternatives`, not pursued"
+        ]
+    }
+    , {name: "DependentHaskell", description: HH.div_
+        [parseString "Aspirational future-direction flag, never shipped"
+        ]
+    }
+    , {name: "DependentTypes", description: HH.div_
+        [ parseString "Aspirational opt-in flag in a design sketch, never shipped"
+        ]
+    }
+    , {name: "OverloadedDo", description: HH.div_ 
+        [ parseString "`QualifiedDo` shipped instead"
+        ]
+    }
+    , {name: "AmbiguousTypesPragma", description: HH.div_ 
+        [ parseString "Floated as a module-wide -X form of the `{-# AMBIGUOUS #-}` pragma, accepted but not implemented as of writing"
+        ]
+    }
+    , {name: "ExtendedTypeClasses", description: HH.div_
+        [ parseString "Illustrative name for a hypothetical single extension bundling `MultiParamTypeClasses` and `FlexibleInstances`, never a real extension"
+        ]
+    }
+    , {name: "ImportShadowing", description: HH.div_ 
+        [parseString "Accepted (2024/08/15) but not implemented as of writing"
+        ]
+    }
+    , { name: "MeaningfulMainReturn", description: HH.div_
+        [ parseString "Accepted (2024-05-21) but not implemented as of writing"
+        ]
     }
     ]

@@ -119,7 +119,7 @@ renderCurrentGame state =
                     [ HH.text "Next" ]
             ]
         , 
-        HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.p_ [s.description]) <$> realExtensions
+        HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.div_ [HH.p_ [HH.text s.name], HH.p_ [s.description]]) <$> (realExtensions <> fakeExtensions)
     ]
 
 render :: forall cs m. State -> H.ComponentHTML Action cs m
