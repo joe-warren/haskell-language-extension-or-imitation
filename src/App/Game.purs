@@ -27,7 +27,9 @@ import Data.Array.Extra.Unsafe (unsafeHead)
 import Data.Maybe (Maybe (Just, Nothing))
 import Effect.Class (class MonadEffect, liftEffect)
 
-data Answer = Real | Fake
+data Answer = Real | Fake 
+
+derive instance Eq Answer
 
 type Question = 
     { correctAnswer :: Answer
@@ -46,6 +48,8 @@ type AnsweredQuestion =
     , question :: Question
     }
 
+isCorrect :: AnsweredQuestion -> Boolean
+isCorrect aq = aq.givenAnswer == aq.question.correctAnswer
 
 data Action
   = NextQuestion
@@ -79,7 +83,15 @@ mkComponent = do
         }
 
 renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
-renderResults res = HH.div_ [HH.text "Game Over"]
+renderResults res = 
+    let nRounds = Array.length res
+        score = Array.length <<< Array.filter isCorrect $ res
+    in HH.div_ 
+        [ HH.h2_ [ HH.text "Game Over" ]
+        , HH.p_ 
+            [ HH.text $ "You Scored " <> show score <> " / " <> show nRounds
+            ]
+        ]
 
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
@@ -119,7 +131,7 @@ nextQuestion (Playing s) =
     case s.currentView of 
         Answered answered ->
             case Array.uncons s.upcomingQuestions of
-                Nothing -> Results s.answeredQuestions
+                Nothing -> Results (Array.snoc s.answeredQuestions answered)
                 Just { head: x, tail: xs} -> Playing
                     { answeredQuestions: Array.snoc s.answeredQuestions answered
                     , upcomingQuestions: xs
@@ -135,8 +147,7 @@ answer ans (Playing s) =
         ToAnswer q -> do
             msg <- answerMessage ans q.correctAnswer
             pure ( Playing ( s{
-                    currentView = Answered { givenAnswer: ans, message: msg, question: q}
-
+                    currentView = Answered { givenAnswer: ans, message: msg, question: q }
                 }))
         _ -> pure (Playing s)
 
