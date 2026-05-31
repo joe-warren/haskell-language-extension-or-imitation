@@ -1,23 +1,9 @@
-module App.Game
-  ( Action(..)
-  , Answer(..)
-  , AnsweredQuestion
-  , CurrentGame
-  , CurrentView(..)
-  , Question
-  , State(..)
-  , badQuestion
-  , goodQuestion
-  , handleAction
-  , mkComponent
-  , render
-  , renderCurrentGame
-  )
-  where
+module App.Game where
 
 import Prelude
 import Halogen as H
 import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
 import Halogen.HTML.Events as HE
 import App.Extensions
 import App.Svg as Svg
@@ -64,6 +50,7 @@ type CurrentGame =
     , upcomingQuestions :: Array Question
     }
 
+
 data State
   = Playing CurrentGame | Results (Array AnsweredQuestion)
 
@@ -94,13 +81,39 @@ renderResults res =
             ]
         ]
 
+iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
+iconForAnswered q = 
+    case [q.givenAnswer, q.question.correctAnswer] of
+        [Real, Real] -> Svg.amongusThumbsupIcon
+        [Fake, Fake] -> Svg.amongusImpostorIcon
+        _ -> Svg.amongusDeadIcon
+
+iconForQuestion :: forall r i p.Question -> Array (HH.IProp r i) -> HH.HTML p i
+iconForQuestion q = Svg.amongusDefaultIcon
+
+iconForCurrentView :: forall r i p. CurrentView -> Array (HH.IProp r i) -> HH.HTML p i
+iconForCurrentView (ToAnswer q) = iconForQuestion q
+iconForCurrentView (Answered q) = iconForAnswered q
+
+icons :: forall a b. CurrentGame -> HH.HTML a b
+icons g = 
+    let mkSmallIcon s = HH.span [HP.class_ (HH.ClassName "smallicon")] [s []]
+        mkLargeIcon s = HH.span [HP.class_ (HH.ClassName "largeicon")] [s []]
+    in HH.p [HP.class_ $ HH.ClassName "icons"] $
+        (mkSmallIcon <<< iconForAnswered <$> g.answeredQuestions)
+            <> [mkLargeIcon <<< iconForCurrentView $ g.currentView]
+            <> (mkSmallIcon <<< iconForQuestion <$> g.upcomingQuestions)
+
+
+
+
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
   HH.div_
     [ HH.p_
         [ HH.h1_ [HH.text "Extension or Imitation"]
-        , Svg.amongusDefaultIcon []
         ]
+    , icons state
     , case state.currentView of 
         ToAnswer question ->
             HH.div_ 

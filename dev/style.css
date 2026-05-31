@@ -32,3 +32,15 @@ body {
     font-family: comic-neue;
     background-color: aliceblue;
 }
+
+.icons svg{
+  vertical-align: middle;
+}
+
+.smallicon svg {
+  width: 32px;
+}
+
+.largeicon svg {
+  width: 124px;
+}
