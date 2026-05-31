@@ -143,7 +143,7 @@ renderCurrentGame state =
                 [ HH.p 
                     [HP.class_ $ HH.ClassName "questionInfo"]
                     [ HH.p_ [ HH.span
-                        [HP.class_ $ HH.ClassName "question"] 
+                        [HP.class_ $ HH.ClassName "extensionName"] 
                         [ HH.text answeredQuestion.question.extension.name ]
                     , HH.p_ [ HH.text answeredQuestion.message ]
                     , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
