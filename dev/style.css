@@ -20,27 +20,68 @@ H1 {
 button {
     font-family: joffrey;
     font-size: 24px;
-    margin: 1em;
+    font-weight: bold;
+    margin: 0.2em 1em 0.2em 1em;
     padding: 0.5em;
+    padding-bottom: 0.35em;
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    border-radius: 0.2em;
+}
+
+button.correct {
+  color: green;
+  border-color: green;
+  background-color: honeydew;
+}
+
+button.incorrect {
+  color: firebrick;
+  border-color: firebrick;
+  background-color: mistyrose;
 }
 
 code {
     font-family: comic-mono;
 }
 
+.questionInfo {
+  min-height: 10em;
+}
+
+.extensionName {
+  font-family: comic-mono;
+  font-size: 24px;
+  padding: 0.3em;
+  padding-bottom: 0.1em;
+  border: 2px solid black;
+  border-radius: 0.25em;
+  width: fit-content;
+  background-color: cornsilk;
+}
+
 body {
     font-family: comic-neue;
     background-color: aliceblue;
+    text-align: center;
+}
+
+.icons {
+  min-height: 124px;
 }
 
 .icons svg{
   vertical-align: middle;
+  padding: 0.2em;
 }
 
 .smallicon svg {
+  margin-top: 48px;
+  margin-bottom: 48px;
   width: 32px;
 }
 
 .largeicon svg {
-  width: 124px;
+  width: 128px;
 }

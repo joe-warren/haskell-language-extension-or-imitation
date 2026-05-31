@@ -75,7 +75,9 @@ renderResults res =
     let nRounds = Array.length res
         score = Array.length <<< Array.filter isCorrect $ res
     in HH.div_ 
-        [ HH.h2_ [ HH.text "Game Over" ]
+        [ title
+        , iconsForResults res
+        , HH.h2_ [ HH.text "Game Over" ]
         , HH.p_ 
             [ HH.text $ "You Scored " <> show score <> " / " <> show nRounds
             ]
@@ -95,6 +97,13 @@ iconForCurrentView :: forall r i p. CurrentView -> Array (HH.IProp r i) -> HH.HT
 iconForCurrentView (ToAnswer q) = iconForQuestion q
 iconForCurrentView (Answered q) = iconForAnswered q
 
+
+iconsForResults :: forall a b. Array AnsweredQuestion -> HH.HTML a b
+iconsForResults questions = 
+    let mkSmallIcon s = HH.span [HP.class_ (HH.ClassName "smallicon")] [s []]
+    in HH.p [HP.class_ $ HH.ClassName "icons"] $
+        (mkSmallIcon <<< iconForAnswered <$> questions)
+
 icons :: forall a b. CurrentGame -> HH.HTML a b
 icons g = 
     let mkSmallIcon s = HH.span [HP.class_ (HH.ClassName "smallicon")] [s []]
@@ -104,20 +113,24 @@ icons g =
             <> [mkLargeIcon <<< iconForCurrentView $ g.currentView]
             <> (mkSmallIcon <<< iconForQuestion <$> g.upcomingQuestions)
 
-
+title = HH.p_
+    [ HH.h1_ [HH.text "Extension or Imitation"]
+    ]
 
 
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
   HH.div_
-    [ HH.p_
-        [ HH.h1_ [HH.text "Extension or Imitation"]
-        ]
+    [ title 
     , icons state
     , case state.currentView of 
         ToAnswer question ->
             HH.div_ 
-                [ HH.p_ [ HH.text question.extension.name ]
+                [ HH.p [HP.class_ $ HH.ClassName "questionInfo"]
+                    [ HH.p_ [ HH.span
+                        [HP.class_ $ HH.ClassName "extensionName"] 
+                        [ HH.text question.extension.name ]
+                        ]]
                 , HH.button
                     [ HE.onClick \_ -> GiveAnswer Real ]
                     [ HH.text "Extension" ]
@@ -127,15 +140,42 @@ renderCurrentGame state =
                 ]
         Answered answeredQuestion ->
             HH.div_ 
-                [ HH.p_ [ HH.text answeredQuestion.question.extension.name ]
-                , HH.p_ [ HH.text answeredQuestion.message ]
-                , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
+                [ HH.p 
+                    [HP.class_ $ HH.ClassName "questionInfo"]
+                    [ HH.p_ [ HH.span
+                        [HP.class_ $ HH.ClassName "question"] 
+                        [ HH.text answeredQuestion.question.extension.name ]
+                    , HH.p_ [ HH.text answeredQuestion.message ]
+                    , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
+                    ]]
+                , HH.p_ 
+                    [ HH.button 
+                        ([ HP.disabled true
+                         ] <> case answeredQuestion.question.correctAnswer of 
+                                Real -> [ HP.class_ $ HH.ClassName "correct" ]
+                                Fake -> case answeredQuestion.givenAnswer of   
+                                    Fake -> []
+                                    Real -> [ HP.class_ $ HH.ClassName "incorrect" ]
+                        )
+                        [ HH.text "Extension" ]
+                    , HH.button 
+                        ([ HP.disabled true 
+                         ] <> case answeredQuestion.question.correctAnswer of 
+                                Fake -> [ HP.class_ $ HH.ClassName "correct" ]
+                                Real -> case answeredQuestion.givenAnswer of   
+                                    Real -> []
+                                    Fake -> [ HP.class_ $ HH.ClassName "incorrect" ]
+                        )
+                        [ HH.text "Imitation" ]
+                ]
                 , HH.button
                     [ HE.onClick \_ -> NextQuestion ]
                     [ HH.text "Next" ]
             ]
+        {-- uncomment this to debug the extension appearance
         , HH.text $ "" <> show (Array.length realExtensions) <> " real, " <> show (Array.length fakeExtensions) <> " fake"
         , HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.div_ [HH.p_ [HH.text s.name], HH.p_ [s.description]]) <$> (realExtensions <> fakeExtensions)
+        --}
     ]
 
 render :: forall cs m. State -> H.ComponentHTML Action cs m

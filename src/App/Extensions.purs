@@ -248,7 +248,7 @@ fakeExtensions =
     }
     , { name: "NonDecreasingComplexity", description: submittedBy "edmundnoble" [] }
     , { name: "ArrowSyntax", description: submittedBy "mniip"
-            [ HH.p_ [parseString "The extension that enables arrow syntax is actually called`Arrows``."]
+            [ HH.p_ [parseString "The extension that enables arrow syntax is actually called `Arrows``."]
             ]
     }
     , { name: "RecordDotSyntax", description: proposal282 $ submittedBy "mniip"
