@@ -96,3 +96,197 @@ body {
 .largeicon svg {
   width: 128px;
 }
+
+
+.red svg .fill-shadow {
+  fill: #a00000;
+}
+
+.red svg .fill-highlight {
+  fill: #FF0000;
+}
+
+.red svg .stroke {
+  stroke: #550000;
+}
+
+.red svg .fill-stroke {
+  fill: #550000;
+}
+
+.blue svg .fill-shadow {
+  fill: #0000a0;
+}
+
+.blue svg .fill-highlight {
+  fill: #0000FF;
+}
+
+.blue svg .stroke {
+  stroke: #000055;
+}
+
+.blue svg .fill-stroke {
+  fill: #000055;
+}
+
+.green svg .fill-shadow {
+  fill: #006000;
+}
+
+.green svg .fill-highlight {
+  fill: #00AA00;
+}
+
+.green svg .stroke {
+  stroke: #004400;
+}
+
+.green svg .fill-stroke {
+  fill: #004400;
+}
+
+.brown svg .fill-shadow {
+  fill: #802000;
+}
+
+.brown svg .fill-highlight {
+  fill: #a04000;
+}
+
+.brown svg .stroke {
+  stroke: #552200;
+}
+
+.brown svg .fill-stroke {
+  fill: #552200;
+}
+
+.orange svg .fill-shadow {
+  fill: #a04000;
+}
+
+.orange svg .fill-highlight {
+  fill: #FF8000;
+}
+
+.orange svg .stroke {
+  stroke: #552200;
+}
+
+.orange svg .fill-stroke {
+  fill: #552200;
+}
+
+.yellow svg .fill-shadow {
+  fill: #a09000;
+}
+
+.yellow svg .fill-highlight {
+  fill: #FFFF00;
+}
+
+.yellow svg .stroke {
+  stroke: #554400;
+}
+
+.yellow svg .fill-stroke {
+  fill: #554400;
+}
+
+
+.pink svg .fill-shadow {
+  fill: #a00090;
+}
+
+.pink svg .fill-highlight {
+  fill: #FF0088;
+}
+
+.pink svg .stroke {
+  stroke: #550044;
+}
+
+.pink svg .fill-stroke {
+  fill: #550044;
+}
+
+.purple svg .fill-shadow {
+  fill: #5000a0;
+}
+
+.purple svg .fill-highlight {
+  fill: #8800FF;
+}
+
+.purple svg .stroke {
+  stroke: #440055;
+}
+
+.purple svg .fill-stroke {
+  fill: #440055;
+}
+
+.cyan svg .fill-shadow {
+  fill: #00A0C0;
+}
+
+.cyan svg .fill-highlight {
+  fill: #00EEFF;
+}
+
+.cyan svg .stroke {
+  stroke: #004455;
+}
+
+.cyan svg .fill-stroke {
+  fill: #004455;
+}
+
+.lime svg .fill-shadow {
+  fill: #00a000;
+}
+
+.lime svg .fill-highlight {
+  fill: #00FF00;
+}
+
+.lime svg .stroke {
+  stroke: #004400;
+}
+
+.lime svg .fill-stroke {
+  fill: #004400;
+}
+
+.white svg .fill-shadow {
+  fill: #9090c0;
+}
+
+.white svg .fill-highlight {
+  fill: #E0E0E0;
+}
+
+.white svg .stroke {
+  stroke: #444455;
+}
+
+.white svg .fill-stroke {
+  fill: #444455;
+}
+
+.black svg .fill-shadow {
+  fill: #505060;
+}
+
+.black svg .fill-highlight {
+  fill: #808090;
+}
+
+.black svg .stroke {
+  stroke: #000000;
+}
+
+.black svg .fill-stroke {
+  fill: #000000;
+}

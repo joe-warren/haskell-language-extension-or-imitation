@@ -21,13 +21,14 @@ derive instance Eq Answer
 type Question = 
     { correctAnswer :: Answer
     , extension :: Extension
+    , colour :: String
     }
 
-goodQuestion :: Extension -> Question
-goodQuestion e = {correctAnswer: Real, extension: e}
+goodQuestion :: String -> Extension -> Question
+goodQuestion col e = {correctAnswer: Real, extension: e, colour: col}
 
-badQuestion :: Extension -> Question
-badQuestion e = {correctAnswer: Fake, extension: e}
+badQuestion :: String -> Extension -> Question
+badQuestion col e = {correctAnswer: Fake, extension: e, colour: col}
 
 type AnsweredQuestion = 
     { givenAnswer :: Answer
@@ -54,10 +55,26 @@ type CurrentGame =
 data State
   = Playing CurrentGame | Results (Array AnsweredQuestion)
 
+colours :: Array String
+colours = 
+    ["red"
+    , "green"
+    , "blue"
+    , "brown"
+    , "orange"
+    , "yellow"
+    , "pink"
+    , "purple"
+    , "cyan"
+    , "lime"
+    , "white"
+    , "black"]
+
 mkComponent :: forall q i o m. MonadEffect m => Effect (H.Component q i o m)
 mkComponent = do
-    good <- map goodQuestion <<< Array.take 6 <$> shuffle realExtensions
-    bad <- map badQuestion <<< Array.take 6 <$> shuffle fakeExtensions
+    randomColours <- shuffle colours 
+    good <- Array.zipWith goodQuestion randomColours <<< Array.take 6 <$> shuffle realExtensions
+    bad <- Array.zipWith badQuestion (Array.drop 6 randomColours) <<< Array.take 6 <$> shuffle fakeExtensions
     questions <- shuffle (Array.concat [good, bad])
     
     pure $ H.mkComponent
@@ -85,13 +102,18 @@ renderResults res =
 
 iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
 iconForAnswered q = 
-    case [q.givenAnswer, q.question.correctAnswer] of
-        [Real, Real] -> Svg.amongusThumbsupIcon
-        [Fake, Fake] -> Svg.amongusImpostorIcon
-        _ -> Svg.amongusDeadIcon
+    let addColour s = HH.span [HP.class_ (HH.ClassName q.question.colour)] [s]
+    in  addColour <<<
+        (case [q.givenAnswer, q.question.correctAnswer] of
+            [Real, Real] -> Svg.amongusThumbsupIcon 
+            [Fake, Fake] -> Svg.amongusImpostorIcon 
+            _ -> Svg.amongusDeadIcon
+        )
 
 iconForQuestion :: forall r i p.Question -> Array (HH.IProp r i) -> HH.HTML p i
-iconForQuestion q = Svg.amongusDefaultIcon
+iconForQuestion q = 
+    let addColour s = HH.span [HP.class_ (HH.ClassName q.colour)] [s]
+    in addColour <<< Svg.amongusDefaultIcon
 
 iconForCurrentView :: forall r i p. CurrentView -> Array (HH.IProp r i) -> HH.HTML p i
 iconForCurrentView (ToAnswer q) = iconForQuestion q
