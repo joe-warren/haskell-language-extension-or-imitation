@@ -20,6 +20,7 @@ import Halogen as H
 import Halogen.HTML as HH
 import Halogen.HTML.Events as HE
 import App.Extensions
+import App.Svg as Svg
 import Data.Array as Array
 import Effect (Effect)
 import Effect.Shuffle (shuffle, pickOr)
@@ -98,6 +99,7 @@ renderCurrentGame state =
   HH.div_
     [ HH.p_
         [ HH.h1_ [HH.text "Extension or Imitation"]
+        , Svg.amongusDefaultIcon []
         ]
     , case state.currentView of 
         ToAnswer question ->
