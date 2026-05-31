@@ -117,6 +117,12 @@ title = HH.p_
     [ HH.h1_ [HH.text "Extension or Imitation"]
     ]
 
+extensionName name = 
+    HH.p_ [ HH.span
+        [HP.class_ $ HH.ClassName "extensionName"] 
+        [ HH.text name ]
+    ]
+
 
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
@@ -126,11 +132,10 @@ renderCurrentGame state =
     , case state.currentView of 
         ToAnswer question ->
             HH.div_ 
-                [ HH.p [HP.class_ $ HH.ClassName "questionInfo"]
-                    [ HH.p_ [ HH.span
-                        [HP.class_ $ HH.ClassName "extensionName"] 
-                        [ HH.text question.extension.name ]
-                        ]]
+                [ 
+                  HH.p 
+                    [HP.class_ $ HH.ClassName "questionInfo"]
+                    [ extensionName question.extension.name ]
                 , HH.button
                     [ HE.onClick \_ -> GiveAnswer Real ]
                     [ HH.text "Extension" ]
@@ -142,12 +147,10 @@ renderCurrentGame state =
             HH.div_ 
                 [ HH.p 
                     [HP.class_ $ HH.ClassName "questionInfo"]
-                    [ HH.p_ [ HH.span
-                        [HP.class_ $ HH.ClassName "extensionName"] 
-                        [ HH.text answeredQuestion.question.extension.name ]
+                    [ extensionName answeredQuestion.question.extension.name
                     , HH.p_ [ HH.text answeredQuestion.message ]
                     , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
-                    ]]
+                    ]
                 , HH.p_ 
                     [ HH.button 
                         ([ HP.disabled true
@@ -172,9 +175,9 @@ renderCurrentGame state =
                     [ HE.onClick \_ -> NextQuestion ]
                     [ HH.text "Next" ]
             ]
-        -- uncomment this to debug the extension appearance
+        {-- uncomment this to debug the extension appearance
         , HH.text $ "" <> show (Array.length realExtensions) <> " real, " <> show (Array.length fakeExtensions) <> " fake"
-        , HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.div_ [HH.p_ [HH.text s.name], HH.p_ [s.description]]) <$> (realExtensions <> fakeExtensions)
+        , HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.div_ [extensionName s.name, HH.p_ [s.description]]) <$> (realExtensions <> fakeExtensions)
         --}
     ]
 
