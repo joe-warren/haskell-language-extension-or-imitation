@@ -249,6 +249,11 @@ fakeExtensions :: Array Extension
 fakeExtensions =
     [ { name: "ApplicativeDon't", description: parseString "It's `ApplicativeDo`" }
     , { name: "MagicCrack", description: parseString "" }
+    , { name: "HashtagCoerce", description: parseString "It's a complier plugin" }
+    , { name: "ImplicitConversions", description: parseString "It's a Scala compiler flag." }
+    , { name: "PostfixOps", description: parseString "`PostfixOperators` is a Haskell language extension.\n`PostfixOps` is a Scala compiler flag" }
+    , { name: "Existentials", description: parseString "The extension that allows defining existential datatypes is actually called `ExistentialQuantification`.\n`Existentials` is a Scala compiler flag." }
+    , { name: "BetterMonadicFor", description: parseString "It's a Scala compiler plugin." }
     , { name: "ApplicativeComprehensions", description: submittedBy "Reed" []}
     , { name: "UnboxedNewtypes", description: submittedBy "Reed" []}
     , { name: "UnboxedDatatypes", description: submittedBy "Reed" []}
