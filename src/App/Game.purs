@@ -172,7 +172,7 @@ renderCurrentGame state =
                     [ HE.onClick \_ -> NextQuestion ]
                     [ HH.text "Next" ]
             ]
-        {-- uncomment this to debug the extension appearance
+        -- uncomment this to debug the extension appearance
         , HH.text $ "" <> show (Array.length realExtensions) <> " real, " <> show (Array.length fakeExtensions) <> " fake"
         , HH.fromPlainHTML <<< HH.span_ $ (\s -> HH.div_ [HH.p_ [HH.text s.name], HH.p_ [s.description]]) <$> (realExtensions <> fakeExtensions)
         --}

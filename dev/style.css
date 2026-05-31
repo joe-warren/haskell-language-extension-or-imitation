@@ -1,16 +1,23 @@
 @font-face {
-  font-family: joffrey; /* set name */
-  src: url(in-your-face-joffrey.woff2); /* url of the font */
+  font-family: joffrey; 
+  src: url(in-your-face-joffrey.woff2);
 }
 
 @font-face {
-  font-family: comic-mono; /* set name */
-  src: url(ComicMono.woff2); /* url of the font */
+  font-family: comic-mono; 
+  src: url(ComicMono.woff2); 
 }
 
 @font-face {
-  font-family: comic-neue; /* set name */
-  src: url(comic-neue.woff2); /* url of the font */
+  font-family: comic-neue; 
+  font-style: normal;
+  src: url(comic-neue.woff2); 
+}
+
+@font-face {
+  font-family: comic-neue; 
+  font-style: italic;
+  src: url(comic-neue-italic.woff2); 
 }
 
 H1 {
@@ -47,7 +54,11 @@ code {
 }
 
 .questionInfo {
-  min-height: 10em;
+  min-height: 12em;
+}
+
+.submittedBy {
+  font-style: italic;
 }
 
 .extensionName {

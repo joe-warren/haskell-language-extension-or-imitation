@@ -14,13 +14,13 @@ type Extension =
     , description :: HH.PlainHTML
     }
 
-quote :: HH.PlainHTML -> HH.PlainHTML
-quote s = HH.span_ [HH.text "“", s, HH.text "”"]
+quote :: String -> String
+quote s = "“" <> s <> "”"
 
-quote' = quote <<< parseString 
+quote' = parseString <<< quote
 
-parseString :: String -> HH.PlainHTML
-parseString s = 
+parseCodeblocks :: String -> HH.PlainHTML
+parseCodeblocks s = 
     let arr = String.split (String.Pattern "`") s
         go true arr = case Array.uncons arr of 
             Nothing -> []
@@ -29,6 +29,11 @@ parseString s =
             Nothing -> []
             Just v -> Array.cons (HH.code_ [HH.text v.head]) (go true v.tail)
     in HH.span_ (go true arr)
+
+parseString :: String -> HH.PlainHTML
+parseString s =
+    let arr = String.split (String.Pattern "\n") s
+    in HH.div_ (HH.p_ <<< Array.singleton <<< parseCodeblocks <$> arr)
 
 proposal :: Int -> String -> String -> HH.PlainHTML -> HH.PlainHTML
 proposal id name url child = 
@@ -40,11 +45,11 @@ proposal id name url child =
                 , HP.target "_blank"
                 ]
                 [ HH.text $ "GHC Proposal " <> show id <> " : "
-                , parseString name
+                , parseCodeblocks name
                 ]
             , HH.text "."
             ]
-        , HH.p_ [child]
+        , child
         ] 
 
 
@@ -192,7 +197,13 @@ realExtensions =
     ]
 
 submittedBy :: String -> Array HH.PlainHTML -> HH.PlainHTML
-submittedBy submitter desc = HH.div_ [HH.p_ desc, HH.p_ [HH.text ("submitted by " <> submitter)]]
+submittedBy submitter desc = 
+    HH.div_ 
+        [ HH.p_ desc
+        , HH.p 
+            [HP.class_ (HH.ClassName "submittedBy")]
+            [HH.text ("submitted by " <> submitter)]
+        ]
 
 proposal281 = proposal 281 "Visible `forall` in types of terms, and types in terms" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0281-visible-forall.rst"
 
@@ -237,7 +248,7 @@ proposal631 = proposal 631 "Meaningful main return types" "https://github.com/gh
 fakeExtensions :: Array Extension 
 fakeExtensions =
     [ { name: "ApplicativeDon't", description: parseString "It's `ApplicativeDo`" }
-    , { name: "MagicCrack", description: parseString "You're probably thinking of `MagicHash`" }
+    , { name: "MagicCrack", description: parseString "" }
     , { name: "ApplicativeComprehensions", description: submittedBy "Reed" []}
     , { name: "UnboxedNewtypes", description: submittedBy "Reed" []}
     , { name: "UnboxedDatatypes", description: submittedBy "Reed" []}
@@ -256,7 +267,7 @@ fakeExtensions =
             ]
     }
     , { name: "ExtendedLists", description: submittedBy "mniip" 
-        [parseString "The real extensions are: `OverloadedLists` for overloading the list literal syntax, `ParallelListComp` for extending the comprehension syntax with zips, and `TransformListComp` for extending the comprehension syntax with \"group by\" and arbitrary processing steps."
+        [parseString "The real extensions are:\n`OverloadedLists` for overloading the list literal syntax\n`ParallelListComp` for extending the comprehension syntax with zips\nand `TransformListComp` for extending the comprehension syntax with \"group by\" and arbitrary processing steps."
         ]
     }
     , { name: "InjectiveTypeFamilies", description: submittedBy "mniip" 
@@ -279,18 +290,18 @@ fakeExtensions =
         ]
     }
     , { name: "LiberalInstances", description: submittedBy "mniip"
-        [parseString "The real extensions are: FlexibleInstances for relaxed rules for instances, `TypeSynonymInstances` allowing use of type synonyms in instances, and `LiberalTypeSynonyms` for deferring impredicativity and partial application checks until after type synonyms are expanded."
+        [parseString "The real extensions are:\nFlexibleInstances for relaxed rules for instances\n`TypeSynonymInstances` allowing use of type synonyms in instances\nand `LiberalTypeSynonyms` for deferring impredicativity and partial application checks until after type synonyms are expanded."
         ]
     }    
     , { name: "QuantifiedTypes", description: submittedBy "mniip" 
-        [ parseString "The extension that enables the forall quantifier in types is `ExplicitForAll` or `RankNTypes`. The extension that enables the forall quantifier in constraints is `QuantifiedConstraints`."
+        [ parseString "The extension that enables the forall quantifier in types is `ExplicitForAll` or `RankNTypes`.\nThe extension that enables the forall quantifier in constraints is `QuantifiedConstraints`."
         ]
     } 
     , { name: "QualifiedTypes", description: submittedBy "mniip" 
         [ parseString "There's no such thing as a \"qualified\" type."
         ] } 
     , { name: "UniversalQuantification", description: submittedBy "mniip" 
-        [ parseString "The \"universal\" quantifier is the forall quantifier, enabled by `ExplicitForAll` or `RankNTypes`. The extension that allows the use of the forall quantifier in datatype definitions is actually called `ExistentialQuantification`."
+        [ parseString "The \"universal\" quantifier is the forall quantifier, enabled by `ExplicitForAll` or `RankNTypes`.\nThe extension that allows the use of the forall quantifier in datatype definitions is actually called `ExistentialQuantification`."
         ]
     } 
     , { name: "MultiParamTypeFamilies", description: submittedBy "mniip"
@@ -309,34 +320,34 @@ fakeExtensions =
         [parseString "The real extension is called `TypeOperators`. Kinds are not distinguished from types and can use operators as well when enabled."
         ] } 
     , { name: "DeriveEq", description: submittedBy "mniip" 
-        [ parseString "It is always possible to derive `Eq`. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive `Eq`.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveOrd", description: submittedBy "mniip"
-        [ parseString "It is always possible to derive Ord. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive Ord.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveShow", description: submittedBy "mniip"
-        [ parseString "It is always possible to derive Show. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive Show.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveRead", description: submittedBy "mniip"
-        [ parseString "It is always possible to derive Read. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive Read.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveEnum", description: submittedBy "mniip"
-        [ parseString "It is always possible to derive Enum. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive Enum.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] } 
     , { name: "DeriveBounded", description: submittedBy "mniip" 
-        [ parseString "It is always possible to derive Bounded. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive Bounded.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] 
     }
     , { name: "DeriveIx", description: submittedBy "mniip" 
-        [ parseString "It is always possible to derive Ix. Real extensions that cover additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "It is always possible to derive Ix.\nReal extensions that cover additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ]
     }
     , { name: "DeriveCoercible", description: submittedBy "mniip" 
-        [ parseString "Coercible is a compiler built-in, for which no instances can be defined (nor derived). Real typeclass-specific deriving extensions are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "Coercible is a compiler built-in, for which no instances can be defined (nor derived).\nReal typeclass-specific deriving extensions are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ] 
     } 
     , { name: "DeriveMonad", description: submittedBy "mniip" 
-        [ parseString "A Monad instance cannot be derived based on a datatype's structure. Real extensions that do enable deriving for additional typeclasses are called: `DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
+        [ parseString "A Monad instance cannot be derived based on a datatype's structure.\nReal extensions that do enable deriving for additional typeclasses are called:\n`DeriveGeneric`, `DeriveFunctor`, `DeriveFoldable`, `DeriveTraversable`, `DeriveLift`, and `DeriveDataTypeable`."
         ]
     } 
     , { name: "DeriveNewtype", description: submittedBy "mniip" 
@@ -347,20 +358,20 @@ fakeExtensions =
         [ parseString "The syntax for literals of unboxed types, such as `1# :: Int#` is actually enabled as part of the `MagicHash` extension."
         ] } 
     , { name: "UnliftedCoercions", description: submittedBy "mniip" 
-        [ parseString "GHC can choose to use lifted or unlifted representations for coercions, but the user generally has no control over this."
+        [ parseString "GHC can choose to use lifted or unlifted representations for coercions,\nbut the user generally has no control over this."
         ] } 
     , { name: "ListSections", description: submittedBy "mniip" 
-        [ parseString "The extension that allows omitting an element of a tuple to create a tupling operator section is called `TupleSections`. There is no analogous extension for lists."
+        [ parseString "The extension that allows omitting an element of a tuple to create a tupling operator section is called `TupleSections`.\nThere is no analogous extension for lists."
         ] } 
     , { name: "WildcardImports", description: submittedBy "mniip"
-        [parseString "A wildcard import (import X rather than import X (x)) is part of `Haskell98` and is always available. A similar sounding real extension is `RecordWildCards`."
+        [parseString "A wildcard import (import X rather than import X (x)) is part of `Haskell98` and is always available.\nA similar sounding real extension is `RecordWildCards`."
         ] 
     } 
     , { name: "TypeSynonyms", description: submittedBy "mniip" 
         [ parseString "Type synonyms (`type X = ...`) are part of `Haskell98` and are always available."
         ] } 
     , { name: "ExplicitArguments", description: submittedBy "mniip" 
-        [parseString " The extension that allows explicit type-level arguments is actually called `TypeApplications`. The extension that allows making such parameters required is actually called `RequiredTypeArguments`."
+        [parseString " The extension that allows explicit type-level arguments is actually called `TypeApplications`.\nThe extension that allows making such parameters required is actually called `RequiredTypeArguments`."
         ]
     } 
     , { name: "CompletePatterns", description: submittedBy "mniip" 
@@ -418,7 +429,7 @@ fakeExtensions =
     ,{ name: "StrictPolyRec", description: submittedBy "bradrn" []}
     ,{ name: "PolymorphismRestriction", description: submittedBy "bradrn" [] }
     ,{ name: "VisibleForall", description: proposal281 $ submittedBy "Alice"
-        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`, `VisibleForall was proposed as an alternate name"
+        [ parseString "The extension called `RequiredTypeArguments` was part of a proposal called `VisibleForall`\n`VisibleForall was proposed as an alternate name"
         ]
     }
     , { name: "RecursiveTypes", description: submittedBy "Alice" []}
@@ -435,23 +446,23 @@ fakeExtensions =
         ]
     }
     , { name: "FlexibleSuperClasses", description: submittedBy "mniip" 
-        [ parseString "Real extensions that relax requirements on typeclass use are `FlexibleContexts` and `FlexibleInstances`. A similar sounding real extension is `UndecidableSuperClasses`."
+        [ parseString "Real extensions that relax requirements on typeclass use are `FlexibleContexts` and `FlexibleInstances`.\nA similar sounding real extension is `UndecidableSuperClasses`."
         ]
     }
     , { name: "UndecidableTypeFamilies", description: submittedBy "mniip"
-          [ parseString "Disabling termination checking for type family reduction is actually included in `UndecidableInstances`. Type family equations are considered \"instances\"."
+          [ parseString "Disabling termination checking for type family reduction is actually included in `UndecidableInstances`.\nType family equations are considered \"instances\"."
           ]
     }
     , { name: "LetPolymorphism", description: submittedBy "mniip"
-          [ parseString "Writing a polymorphic binding with a type signature in a let is part of `Haskell98` and is always enabled. The extension that controls whether bindings without a type signature automatically become polymorphic is actually called `MonoLocalBinds`."
+          [ parseString "Writing a polymorphic binding with a type signature in a let is part of `Haskell98` and is always enabled.\nThe extension that controls whether bindings without a type signature automatically become polymorphic is actually called `MonoLocalBinds`."
           ]
     }
     , { name: "PedanticBottoms", description: submittedBy "mniip"
-          [ parseString "The optimizer's treatment of bottoms is controlled by a -fpedantic-bottoms flag, which can be specified in a `{-# OPTIONS_GHC ... #-}` pragma. It is not a language extension."
+          [ parseString "The optimizer's treatment of bottoms is controlled by a -fpedantic-bottoms flag\nThis can be specified in a `{-# OPTIONS_GHC ... #-}` pragma. It is not a language extension."
           ]
     }
     , { name: "QualifiedIf", description: submittedBy "mniip"
-          [ parseString "The extension that allows customizing the implementation of if ... then ... else ... is `RebindableSyntax`. There's no way to qualify which `ifThenElse` is to be used, like you can with the `QualifiedDo` extension."
+          [ parseString "The extension that allows customizing the implementation of if ... then ... else ... is `RebindableSyntax`.\nThere's no way to qualify which `ifThenElse` is to be used, like you can with the `QualifiedDo` extension."
           ]
     }
     , {name: "ExtendedForAllScope", description: proposal448 $
