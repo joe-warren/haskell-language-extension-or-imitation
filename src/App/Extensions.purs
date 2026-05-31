@@ -427,11 +427,11 @@ fakeExtensions =
         ]
     }
     , { name: "ImplicitParameters", description: submittedBy "mniip"
-        [ parseString "The extension introducing implicit parameters (?x :: X) is actually called `ImplicitParams`."
+        [ parseString "The extension introducing implicit parameters `(?x :: X)` is actually called `ImplicitParams`."
         ]
     } 
     , { name: "ClosedTypeFamilies", description: submittedBy "mniip"
-        [ parseString "The ability to write a closed type family (type family ... where) is always available whenever `TypeFamilies` are themselves enabled."
+        [ parseString "The ability to write a closed type family (`type family ... where`) is always available whenever `TypeFamilies` are themselves enabled."
         ]
     }
     , { name: "FlexibleSuperClasses", description: submittedBy "mniip" 
