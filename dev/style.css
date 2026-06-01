@@ -58,6 +58,11 @@ button {
     color: black;
     border: 2px solid black;
     border-radius: 0.2em;
+    cursor:pointer;
+}
+button:disabled,
+button[disabled]{
+  cursor:default;
 }
 
 @media (prefers-color-scheme: dark) {
