@@ -106,6 +106,7 @@ renderResults res =
             [ HH.text $ "You Scored " <> resultsText res
             ]
         , sharingLinkMastodon res 
+        , sharingLinkBsky res 
         ]
 
 iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
@@ -163,20 +164,28 @@ socialLink icon url = HH.a
 
 pageUrl = "https://doscienceto.it/extension-or-imitation"
 
-sharingLinkMastodon :: forall cs m . Array AnsweredQuestion -> HH.ComponentHTML Action cs m
-sharingLinkMastodon s = 
+sharingLink :: forall cs m . String -> String -> String -> Array AnsweredQuestion -> HH.ComponentHTML Action cs m
+sharingLink linkText erata url s = 
     let 
       text = "I scored " <> resultsText s <> " on \"Extension Or Imitation\"\n" <> pageUrl <> "\nTry it out?\n" 
-        <> "via @hungryjoe@functional.cafe\n"
+        <> erata <> "\n"
         <> "#Haskell #HaskellLanguageExtensionOrImitation"
-      plainUrl = URL.unsafeFromAbsolute "https://toot.kytta.dev/"
+      plainUrl = URL.unsafeFromAbsolute url
       -- toot.kytta.dev doesn't support + in URL parameters
       expandify = String.replaceAll (String.Pattern "+") (String.Replacement "%20")
       params = expandify <<< URLParams.toString <<<
           URLParams.append "text" text $
           URLParams.fromString ""
       sharingUrl = URL.toString $ URL.setSearch params plainUrl
-    in HH.a [HP.href sharingUrl] [HH.text "Toot On Mastodon?"]
+    in HH.p_ [HH.a [HP.href sharingUrl] [HH.text linkText]]
+
+
+sharingLinkMastodon :: forall cs m . Array AnsweredQuestion -> HH.ComponentHTML Action cs m
+sharingLinkMastodon = sharingLink "Toot on Mastodon?" "via @hungryjoe@functional.cafe" "https://toot.kytta.dev/" 
+
+sharingLinkBsky :: forall cs m . Array AnsweredQuestion -> HH.ComponentHTML Action cs m
+sharingLinkBsky = sharingLink "Post on BlueSky?" "via @doscienceto.it" "https://bsky.app/intent/compose" 
+
         
 bottomLinks = HH.p_
     [ socialLink Svg.githubIcon "https://github.com/joe-warren/haskell-language-extension-or-imitation"
