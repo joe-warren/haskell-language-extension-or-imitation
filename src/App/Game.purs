@@ -101,6 +101,17 @@ resultsText res =
         score = Array.length <<< Array.filter isCorrect $ res
     in show score <> " / " <> show nRounds
 
+resultsMessage :: Array AnsweredQuestion -> String
+resultsMessage res = 
+    case Array.length (Array.filter isCorrect res) of 
+        x | x == 12 -> "Amazing! Are you a GHC Dev?"
+          | x >= 10 -> "Well Done! You clearly know your GHC Extensions."
+          | x >= 8 -> "Nice"
+          | x >= 6 -> "Not Bad"
+          | x > 0 -> "Why not read the GHC user's guide and try again?"
+          | otherwise -> "You do realize this is actually more impressive than getting half right?"
+
+
 renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
 renderResults res = 
     HH.div_ 
@@ -109,6 +120,9 @@ renderResults res =
         , HH.h2_ [ HH.text "Game Over" ]
         , HH.p_ 
             [ HH.text $ "You Scored " <> resultsText res
+            ]
+        , HH.p_ 
+            [ HH.text $ resultsMessage res
             ]
         , sharingLinkMastodon res 
         , sharingLinkBsky res 
