@@ -73,6 +73,8 @@ button {
 button:disabled,
 button[disabled]{
   cursor:default;
+  color: lightgray;
+  border-color: lightgray;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -80,6 +82,13 @@ button[disabled]{
     background-color: black;
     color: cornsilk;
     border-color: cornsilk;
+  }
+  
+  button:disabled,
+  button[disabled]{
+    cursor:default;
+    color: gray;
+    border-color: gray;
   }
 }
 
