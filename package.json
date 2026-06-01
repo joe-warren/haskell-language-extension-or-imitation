@@ -10,7 +10,7 @@
     "build": "spago build",
     "test": "spago test",
     "serve": "parcel dev/index.html --open",
-    "build-prod": "rm -rf prod dist && mkdir -p prod && cp dev/* prod/ && spago build && parcel build prod/index.html --public-url ./ && cp -r static dist/static"
+    "build-prod": "rm -rf prod dist && mkdir -p prod && cp dev/* prod/ && spago build && parcel build prod/index.html --public-url https://doscienceto.it/extension-or-imitation/ && cp -r static dist/static"
   },
   "dependencies": {
     "esbuild": "^0.28.0"
