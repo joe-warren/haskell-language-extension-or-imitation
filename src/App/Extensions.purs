@@ -17,7 +17,14 @@ type Extension =
 quote :: String -> String
 quote s = "“" <> s <> "”"
 
-quote' = parseString <<< quote
+realExtension :: String -> String -> HH.PlainHTML
+realExtension desc url = 
+    HH.a 
+        [ HP.href url
+        , HP.target "_blank"
+        ]
+        [ parseString <<< quote $ desc
+        ]
 
 parseCodeblocks :: String -> HH.PlainHTML
 parseCodeblocks s = 
@@ -53,147 +60,425 @@ proposal id name url child =
         ] 
 
 
-
 realExtensions :: Array Extension
 realExtensions = 
-    [ { name :"AllowAmbiguousTypes", description : quote' "Allow the user to write ambiguous types, and the type inference engine to infer them."}
-    ,{ name :"ApplicativeDo", description : quote' "Allow do-notation statements to be desugared via Applicative."}
-    ,{ name :"Arrows", description : quote' "Allow arrow notation (e.g. proc)"}
-    ,{ name :"BangPatterns", description : quote' "Allow bang pattern syntax."}
-    ,{ name :"BinaryLiterals", description : quote' "Allow binary literal syntax."}
-    ,{ name :"BlockArguments", description : quote' "Allow do blocks and other constructs as function arguments."}
-    ,{ name :"CApiFFI", description : quote' "Allow foreign imports to be declared with the capi calling convention."}
-    ,{ name :"ConstrainedClassMethods", description : quote' "Allow class methods to have non-empty contexts."}
-    ,{ name :"ConstraintKinds", description : quote' "Allow constraints to be used as types of kind Constraint."}
-    ,{ name :"CPP", description : quote' "Resolve C preprocessor directives."}
-    ,{ name :"CUSKs", description : quote' "Detect complete user-supplied kind signatures."}
-    ,{ name :"DataKinds", description : quote' "Allow use of data constructors in types."}
-    ,{ name :"DatatypeContexts", description : quote' "Allow contexts on data types."}
-    ,{ name :"DeepSubsumption", description : quote' "Use GHC's deep subsumption checking."}
-    ,{ name :"DefaultSignatures", description : quote' "Allow default signatures for typeclass methods."}
-    ,{ name :"DeriveAnyClass", description : quote' "Allow deriving syntax to be used for any class."}
-    ,{ name :"DeriveDataTypeable", description : quote' "Allow deriving for the Data class."}
-    ,{ name :"DeriveFoldable", description : quote' "Allow deriving for the Foldable class."}
-    ,{ name :"DeriveFunctor", description : quote' "Allow deriving for the Functor class."}
-    ,{ name :"DeriveGeneric", description : quote' "Allow deriving of Generic instances."}
-    ,{ name :"DeriveLift", description : quote' "Allow deriving for the Lift class"}
-    ,{ name :"DeriveTraversable", description : quote' "Allow deriving for the Traversable class."}
-    ,{ name :"DerivingStrategies", description : quote' "Allow use of instance deriving strategies."}
-    ,{ name :"DerivingVia", description : quote' "Allow deriving instances via types of the same runtime representation."}
-    ,{ name :"DisambiguateRecordFields", description : quote' "Automatically disambiguate some record field references."}
-    ,{ name :"DoAndIfThenElse", description : quote' "Allow semicolons in if expressions."}
-    ,{ name :"DuplicateRecordFields", description : quote' "Allow definition of record types with identically-named fields."}
-    ,{ name :"EmptyCase", description : quote' "Allow case expressions with no alternatives."}
-    ,{ name :"EmptyDataDecls", description : quote' "Allow definition of empty data types."}
-    ,{ name :"EmptyDataDeriving", description : quote' "Allow deriving instances of standard type classes for empty data types."}
-    ,{ name :"ExistentialQuantification", description : quote' "Allow existentially quantified type variables in types."}
-    ,{ name :"ExplicitForAll", description : quote' "Allow explicit universal quantification."}
-    ,{ name :"ExplicitLevelImports", description : quote' "Allow explicit level imports in Template Haskell."}
-    ,{ name :"ExplicitNamespaces", description : quote' "Allow use of the type and data keywords to specify the namespace of entries in import/export lists and in other contexts."}
-    ,{ name :"ExtendedDefaultRules", description : quote' "Use GHCi's extended default rules in a normal module."}
-    ,{ name :"ExtendedLiterals", description : quote' "Allow numeric literal postfix syntax for unboxed integers."}
-    ,{ name :"FieldSelectors", description : quote' "Make record field selector functions visible in expressions."}
-    ,{ name :"FlexibleContexts", description : quote' "Remove some restrictions on class contexts"}
-    ,{ name :"FlexibleInstances", description : quote' "Allow instance heads to mention arbitrary nested types."}
-    ,{ name :"ForeignFunctionInterface", description : quote' "Allow foreign function interface syntax."}
-    ,{ name :"FunctionalDependencies", description : quote' "Allow functional dependencies to be given on typeclass declarations."}
-    ,{ name :"GADTs", description : quote' "Allow definition of generalised algebraic data types."}
-    ,{ name :"GADTSyntax", description : quote' "Allow generalised algebraic data type syntax."}
-    ,{ name :"GeneralisedNewtypeDeriving", description : quote' "Allow instances to be derived via newtype deriving."}
-    ,{ name : "GHC2021", description : quote' "Use GHC’s set of default language extensions from 2021"}
-    ,{ name : "GHC2024", description : quote' "Use GHC’s set of default language extensions from 2024"}
-    ,{ name :"GHCForeignImportPrim", description : quote' "Allow prim calling convention. Intended for internal use only."}
-    ,{ name : "Haskell2010", description : quote' "Use the Haskell 2010 language edition."}
-    ,{ name : "Haskell98", description : quote' "Use the Haskell 98 language edition."}
-    ,{ name :"HexFloatLiterals", description : quote' "Allow hexadecimal floating-point literal syntax."}
-    ,{ name :"ImplicitParams", description : quote' "Allow implicit parameter constraints."}
-    ,{ name :"ImplicitPrelude", description : quote' "Implicitly import Prelude."}
-    ,{ name :"ImplicitStagePersistence", description : quote' "Allow identifiers to be used at different levels from where they are defined."}
-    ,{ name :"ImportQualifiedPost", description : quote' "Allows the syntax import M qualified"}
-    ,{ name :"ImpredicativeTypes", description : quote' "Allow impredicative types."}
-    ,{ name :"IncoherentInstances", description : quote' "Allow definitions of instances that may result in incoherence."}
-    ,{ name :"InstanceSigs", description : quote' "Allow type signatures to be written for instance methods."}
-    ,{ name :"InterruptibleFFI", description : quote' "Allow interruptible FFI imports."}
-    ,{ name :"KindSignatures", description : quote' "Allow kind signatures to be given for types."}
-    ,{ name :"LambdaCase", description : quote' "Allow `\\case` expressions."}
-    ,{ name :"LexicalNegation", description : quote' "Use whitespace to determine whether the minus sign stands for negation or subtraction."}
-    ,{ name :"LiberalTypeSynonyms", description : quote' "Relax many of Haskell 98's rules on type synonym definitions."}
-    ,{ name :"LinearTypes", description : quote' "Allow writing of linear arrow types. Implies `MonoLocalBinds`."}
-    ,{ name :"ListTuplePuns", description : quote' "Enable punning for list, tuple and sum types."}
-    ,{ name :"MagicHash", description : quote' "Allow # as a postfix modifier on identifiers."}
-    ,{ name :"MonadComprehensions", description : quote' "Allow list comprehension syntax to be used at monads other than List."}
-    ,{ name :"MonoLocalBinds", description : quote' "Do not generalise types of local bindings."}
-    ,{ name :"MonomorphismRestriction", description : quote' "Apply the Haskell 2010 monomorphism restriction."}
-    ,{ name :"MultilineStrings", description : quote' "Enable multiline string literals."}
-    ,{ name :"MultiParamTypeClasses", description : quote' "Enable multi-parameter type classes."}
-    ,{ name :"MultiWayIf", description : quote' "Allow multi-way if-expressions."}
-    ,{ name :"NamedDefaults", description : quote' "Enable default declarations with explicitly named class, extending Type class defaulting."}
-    ,{ name :"NamedFieldPuns", description : quote' "Allow record field punning syntax."}
-    ,{ name :"NamedWildCards", description : quote' "Allow named wildcards in types."}
-    ,{ name :"NegativeLiterals", description : quote' "Allow negative numeric literal syntax."}
-    ,{ name :"NondecreasingIndentation", description : quote' "Allow nested contexts to be at the same indentation level as its enclosing context."}
-    ,{ name :"NPlusKPatterns", description : quote' "Allow use of n+k patterns."}
-    ,{ name :"NullaryTypeClasses", description : quote' "Deprecated, does nothing. nullary type classes are now enabled using `MultiParamTypeClasses`."}
-    ,{ name :"NumDecimals", description : quote' "Allow use of scientific notation syntax for integer literals."}
-    ,{ name :"NumericUnderscores", description : quote' "Allow underscores in numeric literals."}
-    ,{ name :"OrPatterns", description : quote' "Enable or-patterns."}
-    ,{ name :"OverlappingInstances", description : quote' "Allow definition of overlapping instances."}
-    ,{ name :"OverloadedLabels", description : quote' "Allow overloaded label syntax."}
-    ,{ name :"OverloadedLists", description : quote' "Desugar list syntax via the `IsList` class."}
-    ,{ name :"OverloadedRecordDot", description : quote' "Allow `.` to be used for record field access."}
-    ,{ name :"OverloadedRecordUpdate", description : quote' "Allow `.` syntax in record updates"}
-    ,{ name :"OverloadedStrings", description : quote' "Desugar string literals via IsString class."}
-    ,{ name :"PackageImports", description : quote' "Allow package-qualified import syntax."}
-    ,{ name :"ParallelListComp", description : quote' "Allow parallel list comprehension syntax."}
-    ,{ name :"PartialTypeSignatures", description : quote' "Allow type signatures to contain wildcards."}
-    ,{ name :"PatternGuards", description : quote' "Allow pattern guards syntax."}
-    ,{ name :"PatternSynonyms", description : quote' "Allow definition of pattern synonyms."}
-    ,{ name :"PolyKinds", description : quote' "Allow kind polymorphism."}
-    ,{ name :"PostfixOperators", description : quote' "Allow the use of postfix operators."}
-    ,{ name :"QualifiedDo", description : quote' "Allow qualified do-notation desugaring."}
-    ,{ name :"QualifiedStrings", description : quote' "Enable qualified string literals."}
-    ,{ name :"QuantifiedConstraints", description : quote' "Allow forall quantifiers in constraints."}
-    ,{ name :"QuasiQuotes", description : quote' "Allow quasiquotation syntax."}
-    ,{ name :"Rank2Types", description : quote' "Enable rank-2 types."}
-    ,{ name :"RankNTypes", description : quote' "Allow types of rank greater than one."}
-    ,{ name :"RebindableSyntax", description : quote' "Allow rebinding of builtin syntax."}
-    ,{ name :"RecordWildCards", description : quote' "Allow use of record wildcard syntax."}
-    ,{ name :"RecursiveDo", description : quote' "Allow recursive do (e.g. `mdo`) notation."}
-    ,{ name :"RelaxedPolyRec", description : quote' "Generalised typing of mutually recursive bindings."}
-    ,{ name :"RequiredTypeArguments", description : quote' "Allow use of required type argument syntax in terms."}
-    ,{ name :"RoleAnnotations", description : quote' "Allow role annotation syntax."}
-    ,{ name :"Safe", description : quote' "Enable the Safe Haskell Safe mode."}
-    ,{ name :"ScopedTypeVariables", description : quote' "Lexically scoped explicitly-introduced type variables."}
-    ,{ name :"StandaloneDeriving", description : quote' "Allow standalone instance deriving declarations."}
-    ,{ name :"StandaloneKindSignatures", description : quote' "Allow standalone kind signature declarations."}
-    ,{ name :"StarIsType", description : quote' "Treat `*` as Data.Kind.Type."}
-    ,{ name :"StaticPointers", description : quote' "Allow static syntax."}
-    ,{ name :"Strict", description : quote' "Make bindings in the current module strict by default."}
-    ,{ name :"StrictData", description : quote' "Treat datatype fields as strict by default."}
-    ,{ name :"TemplateHaskell", description : quote' "Allow Template Haskell's splice and quotation syntax."}
-    ,{ name :"TemplateHaskellQuotes", description : quote' "Allow Template Haskell's quotation syntax."}
-    ,{ name :"TraditionalRecordSyntax", description : quote' "Allow traditional record syntax (e.g. `C {f = x}`)."}
-    ,{ name :"TransformListComp", description : quote' "Allow generalised list comprehension syntax."}
-    ,{ name :"Trustworthy", description : quote' "Enable the Safe Haskell Trustworthy mode."}
-    ,{ name :"TupleSections", description : quote' "Allow use of tuple section synxtax."}
-    ,{ name :"TypeAbstractions", description : quote' "Allow type abstraction syntax in patterns and type variable binders."}
-    ,{ name :"TypeApplications", description : quote' "Allow type application syntax in terms and types."}
-    ,{ name :"TypeData", description : quote' "Allow type data declarations."}
-    ,{ name :"TypeFamilies", description : quote' "Allow definition of type families."}
-    ,{ name :"TypeFamilyDependencies", description : quote' "Allow injectivity annotations on type families."}
-    ,{ name :"TypeInType", description : quote' "Deprecated. Enable kind polymorphism and datatype promotion."}
-    ,{ name :"TypeOperators", description : quote' "Allow type constructors to be given operator names."}
-    ,{ name :"TypeSynonymInstances", description : quote' "Allow type synonyms to be mentioned in instance heads."}
-    ,{ name :"UnboxedSums", description : quote' "Allow the use of unboxed sum syntax."}
-    ,{ name :"UnboxedTuples", description : quote' "Allow the use of unboxed tuple syntax."}
-    ,{ name :"UndecidableInstances", description : quote' "Allow definition of instances which may make solving undecidable."}
-    ,{ name :"UndecidableSuperClasses", description : quote' "Allow all superclass constraints, including those that may result in non-termination of the typechecker." }
-    ,{ name :"UnicodeSyntax", description : quote' "Enable unicode syntax." }
-    ,{ name :"UnliftedDatatypes", description : quote' "Allow the definition of unlifted data types." }
-    ,{ name :"UnliftedFFITypes", description : quote' "Allow the types of foreign imports to contain certain unlifted types." }
-    ,{ name :"UnliftedNewtypes", description : quote' "Allow definition of unlifted newtypes."}
-    ,{ name :"Unsafe", description : quote' "Enable Safe Haskell Unsafe mode." }
-    ,{ name :"ViewPatterns", description : quote' "Allow view pattern syntax." }
+    [ { name :"AllowAmbiguousTypes", description : realExtension
+            "Allow the user to write ambiguous types, and the type inference engine to infer them."
+            "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/ambiguous_types.html#extension-AllowAmbiguousTypes"
+        }
+    ,{ name :"ApplicativeDo", description : realExtension 
+        "Allow do-notation statements to be desugared via Applicative."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/applicative_do.html#extension-ApplicativeDo"
+        }
+    ,{ name :"Arrows", description : realExtension "Allow arrow notation (e.g. proc)"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/arrows.html#extension-Arrows"
+    }
+    ,{ name :"BangPatterns", description : realExtension "Allow bang pattern syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/strict.html#extension-BangPatterns"
+    }
+    ,{ name :"BinaryLiterals", description : realExtension "Allow binary literal syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/binary_literals.html#extension-BinaryLiterals"
+    }
+    ,{ name :"BlockArguments", description : realExtension "Allow do blocks and other constructs as function arguments."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/block_arguments.html#extension-BlockArguments"
+    }
+    ,{ name :"CApiFFI", description : realExtension "Allow foreign imports to be declared with the capi calling convention."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/ffi.html#extension-CApiFFI"
+    }
+    ,{ name :"ConstrainedClassMethods", description : realExtension "Allow class methods to have non-empty contexts."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/constrained_class_methods.html#extension-ConstrainedClassMethods"
+    }
+    ,{ name :"ConstraintKinds", description : realExtension "Allow constraints to be used as types of kind Constraint."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/constraint_kind.html#extension-ConstraintKinds"
+    }
+    ,{ name :"CPP", description : realExtension "Resolve C preprocessor directives."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/constraint_kind.html#extension-ConstraintKinds"
+    }
+    ,{ name :"CUSKs", description : realExtension "Detect complete user-supplied kind signatures."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/poly_kinds.html#extension-CUSKs"
+    }
+    ,{ name :"DataKinds", description : realExtension "Allow use of data constructors in types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/data_kinds.html#extension-DataKinds"
+    }
+    ,{ name :"DatatypeContexts", description : realExtension "Allow contexts on data types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/datatype_contexts.html#extension-DatatypeContexts"
+    }
+    ,{ name :"DeepSubsumption", description : realExtension "Use GHC's deep subsumption checking."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/rank_polymorphism.html#extension-DeepSubsumption"
+    }
+    ,{ name :"DefaultSignatures", description : realExtension "Allow default signatures for typeclass methods."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/default_signatures.html#extension-DefaultSignatures"
+    }
+    ,{ name :"DeriveAnyClass", description : realExtension "Allow deriving syntax to be used for any class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/derive_any_class.html#extension-DeriveAnyClass"
+    }
+    ,{ name :"DeriveDataTypeable", description : realExtension "Allow deriving for the Data class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_extra.html#extension-DeriveDataTypeable"
+    }
+    ,{ name :"DeriveFoldable", description : realExtension "Allow deriving for the Foldable class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_extra.html#extension-DeriveFoldable"
+    }
+    ,{ name :"DeriveFunctor", description : realExtension "Allow deriving for the Functor class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_extra.html#extension-DeriveFunctor"
+
+    }
+    ,{ name :"DeriveGeneric", description : realExtension "Allow deriving of Generic instances."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/generics.html#extension-DeriveGeneric"
+    }
+    ,{ name :"DeriveLift", description : realExtension "Allow deriving for the Lift class"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_extra.html#extension-DeriveLift"
+    }
+    ,{ name :"DeriveTraversable", description : realExtension "Allow deriving for the Traversable class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_extra.html#extension-DeriveTraversable"
+    }
+    ,{ name :"DerivingStrategies", description : realExtension "Allow use of instance deriving strategies."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_strategies.html#extension-DerivingStrategies"
+    }
+    ,{ name :"DerivingVia", description : realExtension "Allow deriving instances via types of the same runtime representation."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/deriving_via.html#extension-DerivingVia"
+    }
+    ,{ name :"DisambiguateRecordFields", description : realExtension "Automatically disambiguate some record field references."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/disambiguate_record_fields.html#extension-DisambiguateRecordFields"
+    }
+    ,{ name :"DoAndIfThenElse", description : realExtension "Allow semicolons in if expressions."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/doandifthenelse.html#extension-DoAndIfThenElse"
+    }
+    ,{ name :"DuplicateRecordFields", description : realExtension "Allow definition of record types with identically-named fields."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/duplicate_record_fields.html#extension-DuplicateRecordFields"
+    }
+    ,{ name :"EmptyCase", description : realExtension "Allow case expressions with no alternatives."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/empty_case.html#extension-EmptyCase"
+    }
+    ,{ name :"EmptyDataDecls", description : realExtension "Allow definition of empty data types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/nullary_types.html#extension-EmptyDataDecls"
+    }
+    ,{ name :"EmptyDataDeriving", description : realExtension "Allow deriving instances of standard type classes for empty data types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/empty_data_deriving.html#extension-EmptyDataDeriving"
+    }
+    ,{ name :"ExistentialQuantification", description : realExtension "Allow existentially quantified type variables in types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/existential_quantification.html#extension-ExistentialQuantification"
+    }
+    ,{ name :"ExplicitForAll", description : realExtension "Allow explicit universal quantification."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/explicit_forall.html#extension-ExplicitForAll"
+    }
+    ,{ name :"ExplicitLevelImports", description : realExtension "Allow explicit level imports in Template Haskell."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html#extension-ExplicitLevelImports"
+    }
+    ,{ name :"ExplicitNamespaces", description : realExtension "Allow use of the type and data keywords to specify the namespace of entries in import/export lists and in other contexts."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/explicit_namespaces.html#extension-ExplicitNamespaces"
+    }
+    ,{ name :"ExtendedDefaultRules", description : realExtension "Use GHCi's extended default rules in a normal module." 
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/ghci.html#extension-ExtendedDefaultRules"
+    }
+    ,{ name :"ExtendedLiterals", description : realExtension "Allow numeric literal postfix syntax for unboxed integers."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/extended_literals.html#extension-ExtendedLiterals"
+    }
+    ,{ name :"FieldSelectors", description : realExtension "Make record field selector functions visible in expressions."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/field_selectors.html#extension-FieldSelectors"
+    }
+    ,{ name :"FlexibleContexts", description : realExtension "Remove some restrictions on class contexts"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/flexible_contexts.html#extension-FlexibleContexts"
+    }
+    ,{ name :"FlexibleInstances", description : realExtension "Allow instance heads to mention arbitrary nested types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/instances.html#extension-FlexibleInstances"
+    }
+    ,{ name :"ForeignFunctionInterface", description : realExtension "Allow foreign function interface syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/ffi.html#extension-ForeignFunctionInterface"
+    }
+    ,{ name :"FunctionalDependencies", description : realExtension "Allow functional dependencies to be given on typeclass declarations."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/functional_dependencies.html#extension-FunctionalDependencies"
+    }
+    ,{ name :"GADTs", description : realExtension "Allow definition of generalised algebraic data types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/gadt.html#extension-GADTs"
+    }
+    ,{ name :"GADTSyntax", description : realExtension "Allow generalised algebraic data type syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/gadt_syntax.html#extension-GADTSyntax"
+    }
+    ,{ name :"GeneralisedNewtypeDeriving", description : realExtension "Allow instances to be derived via newtype deriving."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/newtype_deriving.html#extension-GeneralisedNewtypeDeriving"
+    }
+    ,{ name : "GHC2021", description : realExtension "Use GHC’s set of default language extensions from 2021"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/control.html#extension-GHC2021"
+    }
+    ,{ name : "GHC2024", description : realExtension "Use GHC’s set of default language extensions from 2024"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/control.html#extension-GHC2024"
+    }
+    ,{ name :"GHCForeignImportPrim", description : realExtension "Allow prim calling convention. Intended for internal use only."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/ffi.html#extension-GHCForeignImportPrim"
+    }
+    ,{ name : "Haskell2010", description : realExtension "Use the Haskell 2010 language edition."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/control.html#extension-Haskell2010"
+    }
+    ,{ name : "Haskell98", description : realExtension "Use the Haskell 98 language edition."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/control.html#extension-Haskell98"
+    }
+    ,{ name :"HexFloatLiterals", description : realExtension "Allow hexadecimal floating-point literal syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/hex_float_literals.html#extension-HexFloatLiterals"
+    }
+    ,{ name :"ImplicitParams", description : realExtension "Allow implicit parameter constraints."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/implicit_parameters.html#extension-ImplicitParams"
+    }
+    ,{ name :"ImplicitPrelude", description : realExtension "Implicitly import Prelude."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/rebindable_syntax.html#extension-ImplicitPrelude"
+    }
+    ,{ name :"ImplicitStagePersistence", description : realExtension "Allow identifiers to be used at different levels from where they are defined."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html#extension-ImplicitStagePersistence"
+    }
+    ,{ name :"ImportQualifiedPost", description : realExtension "Allows the syntax import M qualified"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/import_qualified_post.html#extension-ImportQualifiedPost"
+    }
+    ,{ name :"ImpredicativeTypes", description : realExtension "Allow impredicative types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/impredicative_types.html#extension-ImpredicativeTypes"
+    }
+    ,{ name :"IncoherentInstances", description : realExtension "Allow definitions of instances that may result in incoherence."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/instances.html#extension-IncoherentInstances"
+    }
+    ,{ name :"InstanceSigs", description : realExtension "Allow type signatures to be written for instance methods."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/instances.html#extension-InstanceSigs"
+    }
+    ,{ name :"InterruptibleFFI", description : realExtension "Allow interruptible FFI imports."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/ffi.html#extension-InterruptibleFFI"
+    }
+    ,{ name :"KindSignatures", description : realExtension "Allow kind signatures to be given for types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/kind_signatures.html#extension-KindSignatures"
+    }
+    ,{ name :"LambdaCase", description : realExtension "Allow `\\case` expressions."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/lambda_case.html#extension-LambdaCase"
+    }
+    ,{ name :"LexicalNegation", description : realExtension "Use whitespace to determine whether the minus sign stands for negation or subtraction."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/lexical_negation.html#extension-LexicalNegation"
+    }
+    ,{ name :"LiberalTypeSynonyms", description : realExtension "Relax many of Haskell 98's rules on type synonym definitions."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/liberal_type_synonyms.html#extension-LiberalTypeSynonyms"
+    }
+    ,{ name :"LinearTypes", description : realExtension "Allow writing of linear arrow types. Implies `MonoLocalBinds`."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/linear_types.html#extension-LinearTypes"
+    }
+    ,{ name :"ListTuplePuns", description : realExtension "Enable punning for list, tuple and sum types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/data_kinds.html#extension-ListTuplePuns"
+    }
+    ,{ name :"MagicHash", description : realExtension "Allow # as a postfix modifier on identifiers."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/magic_hash.html#extension-MagicHash"
+    }
+    ,{ name :"MonadComprehensions", description : realExtension "Allow list comprehension syntax to be used at monads other than List."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/monad_comprehensions.html#extension-MonadComprehensions"
+    }
+    ,{ name :"MonoLocalBinds", description : realExtension "Do not generalise types of local bindings."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/let_generalisation.html#extension-MonoLocalBinds"
+    }
+    ,{ name :"MonomorphismRestriction", description : realExtension "Apply the Haskell 2010 monomorphism restriction."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/monomorphism.html#extension-MonomorphismRestriction"
+    }
+    ,{ name :"MultilineStrings", description : realExtension "Enable multiline string literals."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/multiline_strings.html#extension-MultilineStrings"
+    }
+    ,{ name :"MultiParamTypeClasses", description : realExtension "Enable multi-parameter type classes."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/multi_param_type_classes.html#extension-MultiParamTypeClasses"
+    }
+    ,{ name :"MultiWayIf", description : realExtension "Allow multi-way if-expressions."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/multiway_if.html#extension-MultiWayIf"
+    }
+    ,{ name :"NamedDefaults", description : realExtension "Enable default declarations with explicitly named class, extending Type class defaulting."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/named_defaults.html#extension-NamedDefaults"
+    }
+    ,{ name :"NamedFieldPuns", description : realExtension "Allow record field punning syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/record_puns.html#extension-NamedFieldPuns"
+    }
+    ,{ name :"NamedWildCards", description : realExtension "Allow named wildcards in types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/partial_type_signatures.html#extension-NamedWildCards"
+    }
+    ,{ name :"NegativeLiterals", description : realExtension "Allow negative numeric literal syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/negative_literals.html#extension-NegativeLiterals"
+    }
+    ,{ name :"NondecreasingIndentation", description : realExtension "Allow nested contexts to be at the same indentation level as its enclosing context."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/bugs.html#extension-NondecreasingIndentation"
+    }
+    ,{ name :"NPlusKPatterns", description : realExtension "Allow use of n+k patterns."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/nk_patterns.html#extension-NPlusKPatterns"
+    }
+    ,{ name :"NullaryTypeClasses", description : realExtension "Deprecated, does nothing. nullary type classes are now enabled using `MultiParamTypeClasses`."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/nullary_type_classes.html#extension-NullaryTypeClasses"
+    }
+    ,{ name :"NumDecimals", description : realExtension "Allow use of scientific notation syntax for integer literals."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/num_decimals.html#extension-NumDecimals"
+    }
+    ,{ name :"NumericUnderscores", description : realExtension "Allow underscores in numeric literals."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/numeric_underscores.html#extension-NumericUnderscores"
+    }
+    ,{ name :"OrPatterns", description : realExtension "Enable or-patterns."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/or_patterns.html#extension-OrPatterns"
+    }
+    ,{ name :"OverlappingInstances", description : realExtension "Allow definition of overlapping instances."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/instances.html#extension-OverlappingInstances"
+    }
+    ,{ name :"OverloadedLabels", description : realExtension "Allow overloaded label syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/overloaded_labels.html#extension-OverloadedLabels"
+    }
+    ,{ name :"OverloadedLists", description : realExtension "Desugar list syntax via the `IsList` class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/overloaded_lists.html#extension-OverloadedLists"
+    }
+    ,{ name :"OverloadedRecordDot", description : realExtension "Allow `.` to be used for record field access."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/overloaded_record_dot.html#extension-OverloadedRecordDot"
+    }
+    ,{ name :"OverloadedRecordUpdate", description : realExtension "Allow `.` syntax in record updates"
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/overloaded_record_update.html#extension-OverloadedRecordUpdate"
+    }
+    ,{ name :"OverloadedStrings", description : realExtension "Desugar string literals via IsString class."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/overloaded_strings.html#extension-OverloadedStrings"
+    }
+    ,{ name :"PackageImports", description : realExtension "Allow package-qualified import syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/package_qualified_imports.html#extension-PackageImports"
+    }
+    ,{ name :"ParallelListComp", description : realExtension "Allow parallel list comprehension syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/parallel_list_comprehensions.html#extension-ParallelListComp"
+    }
+    ,{ name :"PartialTypeSignatures", description : realExtension "Allow type signatures to contain wildcards."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/partial_type_signatures.html#extension-PartialTypeSignatures"
+    }
+    ,{ name :"PatternGuards", description : realExtension "Allow pattern guards syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/pattern_guards.html#extension-PatternGuards"
+    }
+    ,{ name :"PatternSynonyms", description : realExtension "Allow definition of pattern synonyms."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/pattern_synonyms.html#extension-PatternSynonyms"
+    }
+    ,{ name :"PolyKinds", description : realExtension "Allow kind polymorphism."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/poly_kinds.html#extension-PolyKinds"
+    }
+    ,{ name :"PostfixOperators", description : realExtension "Allow the use of postfix operators."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/rebindable_syntax.html#extension-PostfixOperators"
+    }
+    ,{ name :"QualifiedDo", description : realExtension "Allow qualified do-notation desugaring."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/qualified_do.html#extension-QualifiedDo"
+    }
+    ,{ name :"QualifiedStrings", description : realExtension "Enable qualified string literals."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/qualified_strings.html#extension-QualifiedStrings"
+    }
+    ,{ name :"QuantifiedConstraints", description : realExtension "Allow forall quantifiers in constraints."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/quantified_constraints.html#extension-QuantifiedConstraints"
+    }
+    ,{ name :"QuasiQuotes", description : realExtension "Allow quasiquotation syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html#extension-QuasiQuotes"
+    }
+    ,{ name :"Rank2Types", description : realExtension "Enable rank-2 types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/rank_polymorphism.html#extension-Rank2Types"
+    }
+    ,{ name :"RankNTypes", description : realExtension "Allow types of rank greater than one."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/rank_polymorphism.html#extension-RankNTypes"
+    }
+    ,{ name :"RebindableSyntax", description : realExtension "Allow rebinding of builtin syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/rebindable_syntax.html#extension-RebindableSyntax"
+    }
+    ,{ name :"RecordWildCards", description : realExtension "Allow use of record wildcard syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/record_wildcards.html#extension-RecordWildCards"
+    }
+    ,{ name :"RecursiveDo", description : realExtension "Allow recursive do (e.g. `mdo`) notation."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/recursive_do.html#extension-RecursiveDo"
+    }
+    ,{ name :"RelaxedPolyRec", description : realExtension "Generalised typing of mutually recursive bindings."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/relaxed_poly_rec.html#extension-RelaxedPolyRec"
+    }
+    ,{ name :"RequiredTypeArguments", description : realExtension "Allow use of required type argument syntax in terms."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/required_type_arguments.html#extension-RequiredTypeArguments"
+    }
+    ,{ name :"RoleAnnotations", description : realExtension "Allow role annotation syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/roles.html#extension-RoleAnnotations"
+    }
+    ,{ name :"Safe", description : realExtension "Enable the Safe Haskell Safe mode."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/safe_haskell.html#extension-Safe"
+    }
+    ,{ name :"ScopedTypeVariables", description : realExtension "Lexically scoped explicitly-introduced type variables."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/scoped_type_variables.html#extension-ScopedTypeVariables"
+    }
+    ,{ name :"StandaloneDeriving", description : realExtension "Allow standalone instance deriving declarations."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/standalone_deriving.html#extension-StandaloneDeriving"
+    }
+    ,{ name :"StandaloneKindSignatures", description : realExtension "Allow standalone kind signature declarations."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/poly_kinds.html#extension-StandaloneKindSignatures"
+    }
+    ,{ name :"StarIsType", description : realExtension "Treat `*` as Data.Kind.Type."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/poly_kinds.html#extension-StarIsType"
+    }
+    ,{ name :"StaticPointers", description : realExtension "Allow static syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/static_pointers.html#extension-StaticPointers"
+    }
+    ,{ name :"Strict", description : realExtension "Make bindings in the current module strict by default."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/strict.html#extension-Strict"
+    }
+    ,{ name :"StrictData", description : realExtension "Treat datatype fields as strict by default."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/strict.html#extension-StrictData"
+    }
+    ,{ name :"TemplateHaskell", description : realExtension "Allow Template Haskell's splice and quotation syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html#extension-TemplateHaskell"
+    }
+    ,{ name :"TemplateHaskellQuotes", description : realExtension "Allow Template Haskell's quotation syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/template_haskell.html#extension-TemplateHaskellQuotes"
+    }
+    ,{ name :"TraditionalRecordSyntax", description : realExtension "Allow traditional record syntax (e.g. `C {f = x}`)."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/traditional_record_syntax.html#extension-TraditionalRecordSyntax"
+    }
+    ,{ name :"TransformListComp", description : realExtension "Allow generalised list comprehension syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/generalised_list_comprehensions.html#extension-TransformListComp"
+    }
+    ,{ name :"Trustworthy", description : realExtension "Enable the Safe Haskell Trustworthy mode."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/safe_haskell.html#extension-Trustworthy"
+    }
+    ,{ name :"TupleSections", description : realExtension "Allow use of tuple section synxtax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/tuple_sections.html#extension-TupleSections"
+    }
+    ,{ name :"TypeAbstractions", description : realExtension "Allow type abstraction syntax in patterns and type variable binders."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_abstractions.html#extension-TypeAbstractions"
+    }
+    ,{ name :"TypeApplications", description : realExtension "Allow type application syntax in terms and types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_applications.html#extension-TypeApplications"
+    }
+    ,{ name :"TypeData", description : realExtension "Allow type data declarations."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_data.html#extension-TypeData"
+    }
+    ,{ name :"TypeFamilies", description : realExtension "Allow definition of type families."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_families.html#extension-TypeFamilies"
+    }
+    ,{ name :"TypeFamilyDependencies", description : realExtension "Allow injectivity annotations on type families."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_families.html#extension-TypeFamilyDependencies"
+    }
+    ,{ name :"TypeInType", description : realExtension "Deprecated. Enable kind polymorphism and datatype promotion."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/poly_kinds.html#extension-TypeInType"
+    }
+    ,{ name :"TypeOperators", description : realExtension "Allow type constructors to be given operator names."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/type_operators.html#extension-TypeOperators"
+    }
+    ,{ name :"TypeSynonymInstances", description : realExtension "Allow type synonyms to be mentioned in instance heads."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/instances.html#extension-TypeSynonymInstances"
+    }
+    ,{ name :"UnboxedSums", description : realExtension "Allow the use of unboxed sum syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/primitives.html#extension-UnboxedSums"
+    }
+    ,{ name :"UnboxedTuples", description : realExtension "Allow the use of unboxed tuple syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/primitives.html#extension-UnboxedTuples"
+    }
+    ,{ name :"UndecidableInstances", description : realExtension "Allow definition of instances which may make solving undecidable."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/instances.html#extension-UndecidableInstances"
+    }
+    ,{ name :"UndecidableSuperClasses", description : realExtension "Allow all superclass constraints, including those that may result in non-termination of the typechecker." 
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/undecidable_super_classes.html#extension-UndecidableSuperClasses"
+    }
+    ,{ name :"UnicodeSyntax", description : realExtension "Enable unicode syntax." 
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/unicode_syntax.html#extension-UnicodeSyntax"
+    }
+    ,{ name :"UnliftedDatatypes", description : realExtension "Allow the definition of unlifted data types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/primitives.html#extension-UnliftedDatatypes"
+     }
+    ,{ name :"UnliftedFFITypes", description : realExtension "Allow the types of foreign imports to contain certain unlifted types."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/ffi.html#extension-UnliftedFFITypes"
+    }
+    ,{ name :"UnliftedNewtypes", description : realExtension "Allow definition of unlifted newtypes."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/primitives.html#extension-UnliftedNewtypes"
+    }
+    ,{ name :"Unsafe", description : realExtension "Enable Safe Haskell Unsafe mode." 
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/safe_haskell.html#extension-Unsafe"
+    }
+    ,{ name :"ViewPatterns", description : realExtension "Allow view pattern syntax."
+        "https://ghc.gitlab.haskell.org/ghc/doc/users_guide/exts/view_patterns.html#extension-ViewPatterns"
+    }
     ]
 
 submittedBy :: String -> Array HH.PlainHTML -> HH.PlainHTML
@@ -502,7 +787,7 @@ fakeExtensions =
         parseString "Rejected alternative name, shipped as `LinearTypes`"
     }
     , {name: "LinearFunctionTypes", description: proposal111 $
-        parseString "Rejectedalternative name; shipped as `LinearTypes`"
+        parseString "Rejected alternative name, shipped as `LinearTypes`"
     }
     , {name: "LinearityKind", description: proposal111 $
         parseString "Speculative name for a notional future extension, never shipped"
