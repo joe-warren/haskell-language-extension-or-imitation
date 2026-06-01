@@ -87,9 +87,13 @@ body {
   padding: 0.2em;
 }
 
+.smallicon {
+  height: 100%;
+}
+
 .smallicon svg {
-  margin-top: 48px;
-  margin-bottom: 48px;
+  margin-top: calc(100%-16px);
+  margin-bottom: calc(100%-16px);
   width: 32px;
 }
 
