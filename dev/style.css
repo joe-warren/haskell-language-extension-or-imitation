@@ -105,6 +105,10 @@ body {
   margin: 1em;
 }
 
+.introImage svg {
+  border-radius: 1em;
+}
+
 
 .red svg .fill-shadow {
   fill: #a00000;

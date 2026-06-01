@@ -56,7 +56,9 @@ type CurrentGame =
     }
 
 data State
-  = Playing CurrentGame | Results (Array AnsweredQuestion)
+  = IntroScreen String
+  | Playing CurrentGame 
+  | Results (Array AnsweredQuestion)
 
 initializeGameState :: Effect State
 initializeGameState = do
@@ -88,9 +90,9 @@ colours =
 
 mkComponent :: forall q i o m. MonadEffect m => Effect (H.Component q i o m)
 mkComponent = do
-    st <- initializeGameState
+    colour <- pickOr "red" colours
     pure $ H.mkComponent
-        { initialState: \_ -> st
+        { initialState: \_ -> IntroScreen colour
         , render
         , eval: H.mkEval H.defaultEval { handleAction = handleAction }
         }
@@ -112,26 +114,6 @@ resultsMessage res =
           | otherwise -> "You do realize this is actually more impressive than getting half right?"
 
 
-renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
-renderResults res = 
-    HH.div_ 
-        [ title
-        , iconsForResults res
-        , HH.h2_ [ HH.text "Game Over" ]
-        , HH.p_ 
-            [ HH.text $ "You Scored " <> resultsText res
-            ]
-        , HH.p_ 
-            [ HH.text $ resultsMessage res
-            ]
-        , sharingLinkMastodon res 
-        , sharingLinkBsky res 
-        , HH.p [HP.class_ (HH.ClassName "buttons")]
-            [ HH.button
-                [ HE.onClick \_ -> NewGame ]
-                [ HH.text "Play Again?" ]
-            ]
-        ]
 
 iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
 iconForAnswered q = 
@@ -151,7 +133,6 @@ iconForQuestion q =
 iconForCurrentView :: forall r i p. CurrentView -> Array (HH.IProp r i) -> HH.HTML p i
 iconForCurrentView (ToAnswer q) = iconForQuestion q
 iconForCurrentView (Answered q) = iconForAnswered q
-
 
 iconsForResults :: forall a b. Array AnsweredQuestion -> HH.HTML a b
 iconsForResults questions = 
@@ -221,8 +202,7 @@ bottomLinks = HH.p_
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
   HH.div_
-    [ title 
-    , icons state
+    [ icons state
     , case state.currentView of 
         ToAnswer question ->
             HH.div_ 
@@ -279,16 +259,51 @@ renderCurrentGame state =
         --}
     ]
 
+    
+renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
+renderResults res = 
+    HH.div_ 
+        [ iconsForResults res
+        , HH.h2_ [ HH.text "Game Over" ]
+        , HH.p_ 
+            [ HH.text $ "You Scored " <> resultsText res
+            ]
+        , HH.p_ 
+            [ HH.text $ resultsMessage res
+            ]
+        , sharingLinkMastodon res 
+        , sharingLinkBsky res 
+        , HH.p [HP.class_ (HH.ClassName "buttons")]
+            [ HH.button
+                [ HE.onClick \_ -> NewGame ]
+                [ HH.text "Play Again?" ]
+            ]
+        ]
+
+    
+renderIntro :: forall cs m. String -> H.ComponentHTML Action cs m
+renderIntro col =
+    HH.div_ 
+        [ HH.div [ HP.class_ $ HH.ClassName ("introImage " <> col)]
+            [Svg.introIcon []]
+        , HH.p [HP.class_ (HH.ClassName "buttons")]
+            [ HH.button
+                [ HE.onClick \_ -> NewGame ]
+                [ HH.text "Play" ]
+            ]
+        ]
+
 render :: forall cs m. State -> H.ComponentHTML Action cs m
 render s = HH.div_
-    [ case s of 
+    [ title
+    , case s of 
         Results arr -> renderResults arr
         Playing st -> renderCurrentGame st
+        IntroScreen col -> renderIntro col
     , bottomLinks
     ]
 
 nextQuestion :: State -> State
-nextQuestion (Results r) = (Results r)
 nextQuestion (Playing s) = 
     case s.currentView of 
         Answered answered ->
@@ -300,10 +315,9 @@ nextQuestion (Playing s) =
                     , currentView: ToAnswer x
                     }
         _ -> Playing s
-
+nextQuestion other = other
 
 answer :: Answer -> State -> Effect State
-answer _ (Results r) = pure (Results r)
 answer ans (Playing s) =
     case s.currentView of 
         ToAnswer q -> do
@@ -312,6 +326,7 @@ answer ans (Playing s) =
                     currentView = Answered { givenAnswer: ans, message: msg, question: q }
                 }))
         _ -> pure (Playing s)
+answer _ other = pure other
 
 -- given then expected
 answerMessage :: Answer -> Answer -> Effect String

@@ -5,4 +5,5 @@ amongusThumbsup=window.amongusThumbsup;
 github = window.github;
 mastodon = window.mastodon;
 bsky = window.bsky;
-export { amongusDefault, amongusDead, amongusImpostor, amongusThumbsup, github, mastodon, bsky };
+intro = window.intro;
+export { amongusDefault, amongusDead, amongusImpostor, amongusThumbsup, github, mastodon, bsky, intro };

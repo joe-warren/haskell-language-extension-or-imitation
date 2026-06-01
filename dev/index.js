@@ -12,5 +12,7 @@ import mastodon from 'bundle-text:./mastodon.svg';
 window.mastodon = mastodon
 import bsky from 'bundle-text:./bsky.svg';
 window.bsky = bsky
+import intro from 'bundle-text:./intro-image.svg';
+window.intro = intro
 
 require("../output/Main/index.js").main();
