@@ -284,7 +284,8 @@ renderResults res =
 renderIntro :: forall cs m. String -> H.ComponentHTML Action cs m
 renderIntro col =
     HH.div_ 
-        [ HH.div [ HP.class_ $ HH.ClassName ("introImage " <> col)]
+        [ HH.p_ [HH.text "Can you tell the valid Haskell Language Extensions (based on the GHC docs), from the Impostors?"]
+        , HH.div [ HP.class_ $ HH.ClassName ("introImage " <> col)]
             [Svg.introIcon []]
         , HH.p [HP.class_ (HH.ClassName "buttons")]
             [ HH.button
