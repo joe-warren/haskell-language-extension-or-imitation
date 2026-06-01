@@ -219,12 +219,14 @@ renderCurrentGame state =
                         [ HH.text "Imitation" ]
                     ]
                 ]
-        Answered answeredQuestion ->
+        Answered answeredQuestion -> 
             HH.div_ 
                 [ HH.p 
                     [HP.class_ $ HH.ClassName "questionInfo"]
                     [ extensionName answeredQuestion.question.extension.name
-                    , HH.p_ [ HH.text answeredQuestion.message ]
+                    , HH.p 
+                        [HP.class_ <<< HH.ClassName $ (if isCorrect answeredQuestion then "correct" else "incorrect") <> " message"]
+                        [ HH.text answeredQuestion.message ]
                     , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
                     ]
                 , HH.p [HP.class_ $ HH.ClassName "buttons"]

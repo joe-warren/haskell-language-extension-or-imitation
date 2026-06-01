@@ -20,6 +20,12 @@
   src: url(comic-neue-italic.woff2); 
 }
 
+@font-face {
+  font-family: comic-neue; 
+  font-weight: bold;
+  src: url(comic-neue-bold.woff2); 
+}
+
 body {
     font-family: comic-neue;
     background-color: aliceblue;
@@ -103,6 +109,28 @@ button.incorrect {
   }
 }
   
+.message {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.message.correct {
+  color: green;
+}
+
+.message.incorrect {
+  color: firebrick;
+}
+
+@media (prefers-color-scheme: dark) {
+  .message.correct {
+    color: palegreen;
+  }
+
+  .message.incorrect {
+    color: lightcoral;
+  }
+}
 
 
 code {
@@ -110,7 +138,7 @@ code {
 }
 
 .questionInfo {
-  min-height: 12em;
+  min-height: 14em;
 }
 
 .submittedBy {
@@ -135,8 +163,6 @@ code {
   }
 }
   
-
-
 .icons svg{
   vertical-align: middle;
   padding: 0.2em;
