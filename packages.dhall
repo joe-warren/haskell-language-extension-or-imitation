@@ -5,7 +5,7 @@ let upstream =
 let additions =
       { svg-parser-halogen =
         { dependencies =
-          [ "prelude", "bifunctors", "arrays", "either", "halogen", "svg-parser" ]
+          [ "prelude", "bifunctors", "arrays", "either", "halogen", "svg-parser", "web-url" ]
         , repo = "https://github.com/rnons/purescript-svg-parser-halogen.git"
         , version = "v2.0.0"
         }

@@ -8,11 +8,14 @@ import Halogen.HTML.Events as HE
 import App.Extensions
 import App.Svg as Svg
 import Data.Array as Array
+import Data.String as String
 import Effect (Effect)
 import Effect.Shuffle (shuffle, pickOr)
 import Data.Array.Extra.Unsafe (unsafeHead)
 import Data.Maybe (Maybe (Just, Nothing))
 import Effect.Class (class MonadEffect, liftEffect)
+import Web.URL as URL
+import Web.URL.URLSearchParams as URLParams
 
 data Answer = Real | Fake 
 
@@ -87,17 +90,22 @@ mkComponent = do
         , eval: H.mkEval H.defaultEval { handleAction = handleAction }
         }
 
-renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
-renderResults res = 
+resultsText :: Array AnsweredQuestion -> String
+resultsText res = 
     let nRounds = Array.length res
         score = Array.length <<< Array.filter isCorrect $ res
-    in HH.div_ 
+    in show score <> " / " <> show nRounds
+
+renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
+renderResults res = 
+    HH.div_ 
         [ title
         , iconsForResults res
         , HH.h2_ [ HH.text "Game Over" ]
         , HH.p_ 
-            [ HH.text $ "You Scored " <> show score <> " / " <> show nRounds
+            [ HH.text $ "You Scored " <> resultsText res
             ]
+        , sharingLinkMastodon res 
         ]
 
 iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
@@ -152,6 +160,24 @@ socialLink icon url = HH.a
         ]
         [ icon []
         ]
+
+pageUrl = "https://doscienceto.it/extension-or-imitation"
+
+sharingLinkMastodon :: forall cs m . Array AnsweredQuestion -> HH.ComponentHTML Action cs m
+sharingLinkMastodon s = 
+    let 
+      text = "I scored " <> resultsText s <> " on \"Extension Or Imitation\"\n" <> pageUrl <> "\nTry it out?\n" 
+        <> "via @hungryjoe@functional.cafe\n"
+        <> "#Haskell #HaskellLanguageExtensionOrImitation"
+      plainUrl = URL.unsafeFromAbsolute "https://toot.kytta.dev/"
+      -- toot.kytta.dev doesn't support + in URL parameters
+      expandify = String.replaceAll (String.Pattern "+") (String.Replacement "%20")
+      params = expandify <<< URLParams.toString <<<
+          URLParams.append "text" text $
+          URLParams.fromString ""
+      sharingUrl = URL.toString $ URL.setSearch params plainUrl
+    in HH.a [HP.href sharingUrl] [HH.text "Toot On Mastodon?"]
+        
 bottomLinks = HH.p_
     [ socialLink Svg.githubIcon "https://github.com/joe-warren/haskell-language-extension-or-imitation"
     , socialLink Svg.mastodonIcon "https://functional.cafe/@hungryjoe"
