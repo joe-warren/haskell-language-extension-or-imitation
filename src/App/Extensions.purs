@@ -310,11 +310,11 @@ fakeExtensions =
         ]
     } 
     , { name: "MultiParamTypeFamilies", description: submittedBy "mniip"
-        [ parseString "The real extension is `MultiParamTypeClasses`. Type families (whenever enabled) can always have multiple parameters."
+        [ parseString "The real extension is `MultiParamTypeClasses`.\nType families (whenever enabled) can always have multiple parameters."
         ]
     }
     , { name: "NullaryTypeFamilies", description: submittedBy "mniip" 
-        [parseString "The real extension is `NullaryTypeClasses`. Type families (whenever enabled) can always have no arguments."
+        [parseString "The real extension is `NullaryTypeClasses`.\nType families (whenever enabled) can always have no arguments."
         ]
     } 
     , { name: "DependentKinds", description: submittedBy "mniip"
