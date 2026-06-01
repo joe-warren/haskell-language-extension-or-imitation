@@ -10,6 +10,11 @@ foreign import amongusDead :: String
 foreign import amongusImpostor :: String
 foreign import amongusThumbsup :: String
 
+foreign import github :: String
+foreign import mastodon :: String
+
+foreign import bsky :: String
+
 amongusDefaultIcon :: forall p r i. Array (IProp r i) -> HTML p i
 amongusDefaultIcon = icon amongusDefault
 
@@ -23,5 +28,11 @@ amongusThumbsupIcon :: forall p r i. Array (IProp r i) -> HTML p i
 amongusThumbsupIcon = icon amongusThumbsup
 
 
+githubIcon :: forall p r i. Array (IProp r i) -> HTML p i
+githubIcon = icon github
 
+mastodonIcon :: forall p r i. Array (IProp r i) -> HTML p i
+mastodonIcon = icon mastodon
 
+bskyIcon :: forall p r i. Array (IProp r i) -> HTML p i
+bskyIcon = icon bsky

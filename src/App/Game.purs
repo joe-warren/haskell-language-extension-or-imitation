@@ -145,6 +145,19 @@ extensionName name =
         [ HH.text name ]
     ]
 
+socialLink icon url = HH.a
+        [ HP.href url
+        , HP.target "_blank"
+        , HP.class_ (HH.ClassName "socialLink")
+        ]
+        [ icon []
+        ]
+bottomLinks = HH.p_
+    [ socialLink Svg.githubIcon "https://github.com/joe-warren/haskell-language-extension-or-imitation"
+    , socialLink Svg.mastodonIcon "https://functional.cafe/@hungryjoe"
+    , socialLink Svg.bskyIcon "https://bsky.app/profile/doscienceto.it"
+    ]
+
 
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
@@ -204,9 +217,12 @@ renderCurrentGame state =
     ]
 
 render :: forall cs m. State -> H.ComponentHTML Action cs m
-render = case _ of 
-    Results arr -> renderResults arr
-    Playing st -> renderCurrentGame st
+render s = HH.div_
+    [ case s of 
+        Results arr -> renderResults arr
+        Playing st -> renderCurrentGame st
+    , bottomLinks
+    ]
 
 nextQuestion :: State -> State
 nextQuestion (Results r) = (Results r)

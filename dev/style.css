@@ -97,6 +97,10 @@ body {
   width: 128px;
 }
 
+.socialLink {
+  margin: 1em;
+}
+
 
 .red svg .fill-shadow {
   fill: #a00000;
@@ -338,3 +342,4 @@ body {
 .black svg .fill-stroke {
   fill: #000000;
 }
+

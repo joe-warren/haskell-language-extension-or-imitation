@@ -1,5 +1,8 @@
 amongusDefault = window.amongusDefault
 amongusDead=window.amongusDead;
 amongusImpostor=window.amongusImpostor;
-amongusThumbsup=window.amongusThumbsup
-export { amongusDefault, amongusDead, amongusImpostor, amongusThumbsup };
+amongusThumbsup=window.amongusThumbsup;
+github = window.github;
+mastodon = window.mastodon;
+bsky = window.bsky;
+export { amongusDefault, amongusDead, amongusImpostor, amongusThumbsup, github, mastodon, bsky };
