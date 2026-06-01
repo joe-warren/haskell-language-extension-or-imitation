@@ -195,7 +195,7 @@ renderCurrentGame state =
                 ]
                 , HH.button
                     [ HE.onClick \_ -> NextQuestion ]
-                    [ HH.text "Next" ]
+                    [ HH.text (if Array.null state.upcomingQuestions then "Finish" else "Next") ]
             ]
         {-- uncomment this to debug the extension appearance
         , HH.text $ "" <> show (Array.length realExtensions) <> " real, " <> show (Array.length fakeExtensions) <> " fake"
