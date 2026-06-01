@@ -20,6 +20,29 @@
   src: url(comic-neue-italic.woff2); 
 }
 
+body {
+    font-family: comic-neue;
+    background-color: aliceblue;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: navy;
+    color: cornsilk;
+  }
+}
+
+a {
+  color: blue;
+}
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: cornflowerblue;
+  }
+}
+
 H1 {
     font-family: joffrey;
 }
@@ -37,6 +60,14 @@ button {
     border-radius: 0.2em;
 }
 
+@media (prefers-color-scheme: dark) {
+  button {
+    background-color: black;
+    color: cornsilk;
+    border-color: cornsilk;
+  }
+}
+
 .buttons {
   min-height: 148px;
 }
@@ -52,6 +83,22 @@ button.incorrect {
   border-color: firebrick;
   background-color: mistyrose;
 }
+
+@media (prefers-color-scheme: dark) {
+  button.correct {
+    color: honeydew;
+    border-color: honeydew;
+    background-color: green;
+  }
+
+  button.incorrect {
+    color: mistyrose;
+    border-color: mistyrose;
+    background-color: firebrick;
+  }
+}
+  
+
 
 code {
     font-family: comic-mono;
@@ -76,11 +123,14 @@ code {
   background-color: cornsilk;
 }
 
-body {
-    font-family: comic-neue;
-    background-color: aliceblue;
-    text-align: center;
+@media (prefers-color-scheme: dark) {
+  .extensionName {
+    border-color:  cornsilk;
+    background-color: black;
+  }
 }
+  
+
 
 .icons svg{
   vertical-align: middle;
@@ -101,12 +151,22 @@ body {
   width: 128px;
 }
 
+.introImage svg {
+  border-radius: 1em;
+}
+
 .socialLink {
   margin: 1em;
 }
 
-.introImage svg {
-  border-radius: 1em;
+.socialIcon {
+  fill: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  .socialIcon {
+    fill: #000044;
+  }
 }
 
 
@@ -131,11 +191,11 @@ body {
 }
 
 .blue svg .fill-shadow {
-  fill: #0000a0;
+  fill: #1010B0;
 }
 
 .blue svg .fill-highlight {
-  fill: #0000FF;
+  fill: #3333FF;
 }
 
 .blue svg .fill-tongue {
@@ -143,11 +203,11 @@ body {
 }
 
 .blue svg .stroke {
-  stroke: #000055;
+  stroke: #000022;
 }
 
 .blue svg .fill-stroke {
-  fill: #000055;
+  fill: #000022;
 }
 
 .green svg .fill-shadow {
