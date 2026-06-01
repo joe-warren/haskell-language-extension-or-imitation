@@ -45,6 +45,7 @@ isCorrect aq = aq.givenAnswer == aq.question.correctAnswer
 data Action
   = NextQuestion
   | GiveAnswer Answer 
+  | NewGame
 
 data CurrentView = ToAnswer Question | Answered AnsweredQuestion
 
@@ -54,9 +55,21 @@ type CurrentGame =
     , upcomingQuestions :: Array Question
     }
 
-
 data State
   = Playing CurrentGame | Results (Array AnsweredQuestion)
+
+initializeGameState :: Effect State
+initializeGameState = do
+    randomColours <- shuffle colours 
+    good <- Array.zipWith goodQuestion randomColours <<< Array.take 6 <$> shuffle realExtensions
+    bad <- Array.zipWith badQuestion (Array.drop 6 randomColours) <<< Array.take 6 <$> shuffle fakeExtensions
+    questions <- shuffle (Array.concat [good, bad])
+    pure $ Playing 
+        { answeredQuestions: []
+        , currentView: ToAnswer (unsafeHead questions)
+        , upcomingQuestions: Array.drop 1 questions
+        }
+
 
 colours :: Array String
 colours = 
@@ -75,17 +88,9 @@ colours =
 
 mkComponent :: forall q i o m. MonadEffect m => Effect (H.Component q i o m)
 mkComponent = do
-    randomColours <- shuffle colours 
-    good <- Array.zipWith goodQuestion randomColours <<< Array.take 6 <$> shuffle realExtensions
-    bad <- Array.zipWith badQuestion (Array.drop 6 randomColours) <<< Array.take 6 <$> shuffle fakeExtensions
-    questions <- shuffle (Array.concat [good, bad])
-    
+    st <- initializeGameState
     pure $ H.mkComponent
-        { initialState: \_ -> Playing 
-            { answeredQuestions: []
-            , currentView: ToAnswer (unsafeHead questions)
-            , upcomingQuestions: Array.drop 1 questions
-            }
+        { initialState: \_ -> st
         , render
         , eval: H.mkEval H.defaultEval { handleAction = handleAction }
         }
@@ -107,6 +112,11 @@ renderResults res =
             ]
         , sharingLinkMastodon res 
         , sharingLinkBsky res 
+        , HH.p [HP.class_ (HH.ClassName "buttons")]
+            [ HH.button
+                [ HE.onClick \_ -> NewGame ]
+                [ HH.text "Play Again?" ]
+            ]
         ]
 
 iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
@@ -298,9 +308,12 @@ answerMessage Fake Real = pickOr "" ["It's Real", "Would You Believe it's Real",
  
 handleAction :: forall cs o m. MonadEffect m => Action -> H.HalogenM State Action cs o m Unit
 handleAction = case _ of
-  NextQuestion -> H.modify_ nextQuestion
-  GiveAnswer ans -> do 
-    s <- H.get 
-    H.put =<< liftEffect (answer ans s)
+    NewGame -> do 
+        st <- liftEffect initializeGameState
+        H.put st
+    NextQuestion -> H.modify_ nextQuestion
+    GiveAnswer ans -> do 
+        s <- H.get 
+        H.put =<< liftEffect (answer ans s)
   
   
