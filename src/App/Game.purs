@@ -45,6 +45,7 @@ isCorrect aq = aq.givenAnswer == aq.question.correctAnswer
 data Action
   = NextQuestion
   | GiveAnswer Answer 
+  | FocusResult AnsweredQuestion
   | NewGame
 
 data CurrentView = ToAnswer Question | Answered AnsweredQuestion
@@ -58,7 +59,7 @@ type CurrentGame =
 data State
   = IntroScreen String
   | Playing CurrentGame 
-  | Results (Array AnsweredQuestion)
+  | Results (Array AnsweredQuestion) (Maybe AnsweredQuestion)
 
 initializeGameState :: Effect State
 initializeGameState = do
@@ -115,35 +116,42 @@ resultsMessage res =
 
 
 
-iconForAnswered :: forall r i p. AnsweredQuestion -> Array (HH.IProp r i) -> HH.HTML p i
+iconForAnswered :: forall r i p. AnsweredQuestion -> HH.HTML p i
 iconForAnswered q = 
     let addColour s = HH.span [HP.class_ (HH.ClassName q.question.colour)] [s]
-    in  addColour <<<
+        props = []
+    in  addColour
         (case [q.givenAnswer, q.question.correctAnswer] of
-            [Real, Real] -> Svg.amongusThumbsupIcon 
-            [Fake, Fake] -> Svg.amongusImpostorIcon 
-            _ -> Svg.amongusDeadIcon
+            [Real, Real] -> Svg.amongusThumbsupIcon props    
+            [Fake, Fake] -> Svg.amongusImpostorIcon props
+            _ -> Svg.amongusDeadIcon props
         )
 
-iconForQuestion :: forall r i p.Question -> Array (HH.IProp r i) -> HH.HTML p i
+iconForQuestion :: forall r i p.Question -> HH.HTML p i
 iconForQuestion q = 
     let addColour s = HH.span [HP.class_ (HH.ClassName q.colour)] [s]
-    in addColour <<< Svg.amongusDefaultIcon
+    in addColour $ Svg.amongusDefaultIcon []
 
-iconForCurrentView :: forall r i p. CurrentView -> Array (HH.IProp r i) -> HH.HTML p i
+iconForCurrentView :: forall r i p. CurrentView -> HH.HTML p i
 iconForCurrentView (ToAnswer q) = iconForQuestion q
 iconForCurrentView (Answered q) = iconForAnswered q
 
-iconsForResults :: forall a b. Array AnsweredQuestion -> HH.HTML a b
+iconsForResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
+
 iconsForResults questions = 
-    let mkSmallIcon s = HH.span [HP.class_ (HH.ClassName "smallicon")] [s []]
+    let mkIcon ans =
+            HH.span 
+                [ HP.class_ (HH.ClassName "smallicon canClick")
+                , HE.onClick (\_ -> FocusResult ans)
+                ] 
+                [iconForAnswered ans]
     in HH.p [HP.class_ $ HH.ClassName "icons"] $
-        (mkSmallIcon <<< iconForAnswered <$> questions)
+        (mkIcon <$> questions)
 
 icons :: forall a b. CurrentGame -> HH.HTML a b
 icons g = 
-    let mkSmallIcon s = HH.span [HP.class_ (HH.ClassName "smallicon")] [s []]
-        mkLargeIcon s = HH.span [HP.class_ (HH.ClassName "largeicon")] [s []]
+    let mkSmallIcon s = HH.span [HP.class_ (HH.ClassName "smallicon")] [s]
+        mkLargeIcon s = HH.span [HP.class_ (HH.ClassName "largeicon")] [s]
     in HH.p [HP.class_ $ HH.ClassName "icons"] $
         (mkSmallIcon <<< iconForAnswered <$> g.answeredQuestions)
             <> [mkLargeIcon <<< iconForCurrentView $ g.currentView]
@@ -199,6 +207,17 @@ bottomLinks = HH.p_
     ]
 
 
+renderQuestionInfo :: forall a b. AnsweredQuestion -> HH.HTML a b
+renderQuestionInfo answeredQuestion =
+    HH.p 
+        [HP.class_ $ HH.ClassName "questionInfo"]
+        [ extensionName answeredQuestion.question.extension.name
+        , HH.p 
+            [HP.class_ <<< HH.ClassName $ (if isCorrect answeredQuestion then "correct" else "incorrect") <> " message"]
+            [ HH.text answeredQuestion.message ]
+        , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
+        ]
+
 renderCurrentGame :: forall cs m. CurrentGame -> H.ComponentHTML Action cs m
 renderCurrentGame state =
   HH.div_
@@ -221,14 +240,7 @@ renderCurrentGame state =
                 ]
         Answered answeredQuestion -> 
             HH.div_ 
-                [ HH.p 
-                    [HP.class_ $ HH.ClassName "questionInfo"]
-                    [ extensionName answeredQuestion.question.extension.name
-                    , HH.p 
-                        [HP.class_ <<< HH.ClassName $ (if isCorrect answeredQuestion then "correct" else "incorrect") <> " message"]
-                        [ HH.text answeredQuestion.message ]
-                    , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
-                    ]
+                [ renderQuestionInfo answeredQuestion
                 , HH.p [HP.class_ $ HH.ClassName "buttons"]
                     [ HH.p_ 
                         [ HH.button 
@@ -262,10 +274,13 @@ renderCurrentGame state =
     ]
 
     
-renderResults :: forall cs m. Array AnsweredQuestion -> H.ComponentHTML Action cs m
-renderResults res = 
+renderResults :: forall cs m. Array AnsweredQuestion -> Maybe AnsweredQuestion -> H.ComponentHTML Action cs m
+renderResults res focus = 
     HH.div_ 
         [ iconsForResults res
+        , case focus of 
+            Nothing -> HH.text ""
+            Just ans -> renderQuestionInfo ans
         , HH.h2_ [ HH.text "Game Over" ]
         , HH.p_ 
             [ HH.text $ "You Scored " <> resultsText res
@@ -300,7 +315,7 @@ render :: forall cs m. State -> H.ComponentHTML Action cs m
 render s = HH.div_
     [ title
     , case s of 
-        Results arr -> renderResults arr
+        Results arr focus -> renderResults arr focus
         Playing st -> renderCurrentGame st
         IntroScreen col -> renderIntro col
     , bottomLinks
@@ -311,7 +326,7 @@ nextQuestion (Playing s) =
     case s.currentView of 
         Answered answered ->
             case Array.uncons s.upcomingQuestions of
-                Nothing -> Results (Array.snoc s.answeredQuestions answered)
+                Nothing -> Results (Array.snoc s.answeredQuestions answered) Nothing
                 Just { head: x, tail: xs} -> Playing
                     { answeredQuestions: Array.snoc s.answeredQuestions answered
                     , upcomingQuestions: xs
@@ -337,6 +352,10 @@ answerMessage Real Real = pickOr "" ["Well Done", "Well Spotted", "Nicely Done",
 answerMessage Fake Fake = pickOr "" ["Spot On", "No Fooling You", "It's Absolutely Fake", "It's Not Real"]
 answerMessage Real Fake = pickOr "" ["Wrong", "Gotcha", "It's Fake", "Sorry"]
 answerMessage Fake Real = pickOr "" ["It's Real", "Would You Believe it's Real", "It's a Real Extension"]
+
+focusResult :: AnsweredQuestion -> State -> State
+focusResult ans (Results allRes _) = Results allRes (Just ans)
+focusResult _ st = st
  
 handleAction :: forall cs o m. MonadEffect m => Action -> H.HalogenM State Action cs o m Unit
 handleAction = case _ of
@@ -347,5 +366,6 @@ handleAction = case _ of
     GiveAnswer ans -> do 
         s <- H.get 
         H.put =<< liftEffect (answer ans s)
-  
+    FocusResult ans -> H.modify_ (focusResult ans)
+    
   

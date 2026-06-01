@@ -53,6 +53,10 @@ H1 {
     font-family: joffrey;
 }
 
+.canClick {
+    cursor:pointer;
+}
+
 button {
     font-family: joffrey;
     font-size: 24px;
