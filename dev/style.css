@@ -37,6 +37,10 @@ button {
     border-radius: 0.2em;
 }
 
+.buttons {
+  min-height: 148px;
+}
+
 button.correct {
   color: green;
   border-color: green;
@@ -76,10 +80,6 @@ body {
     font-family: comic-neue;
     background-color: aliceblue;
     text-align: center;
-}
-
-.icons {
-  min-height: 124px;
 }
 
 .icons svg{

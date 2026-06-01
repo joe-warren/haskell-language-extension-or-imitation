@@ -206,12 +206,14 @@ renderCurrentGame state =
                   HH.p 
                     [HP.class_ $ HH.ClassName "questionInfo"]
                     [ extensionName question.extension.name ]
-                , HH.button
-                    [ HE.onClick \_ -> GiveAnswer Real ]
-                    [ HH.text "Extension" ]
-                , HH.button
-                    [ HE.onClick \_ -> GiveAnswer Fake ]
-                    [ HH.text "Imitation" ]
+                , HH.p [HP.class_ (HH.ClassName "buttons")]
+                    [ HH.button
+                        [ HE.onClick \_ -> GiveAnswer Real ]
+                        [ HH.text "Extension" ]
+                    , HH.button
+                        [ HE.onClick \_ -> GiveAnswer Fake ]
+                        [ HH.text "Imitation" ]
+                    ]
                 ]
         Answered answeredQuestion ->
             HH.div_ 
@@ -221,29 +223,31 @@ renderCurrentGame state =
                     , HH.p_ [ HH.text answeredQuestion.message ]
                     , HH.p_ [ HH.fromPlainHTML answeredQuestion.question.extension.description ]
                     ]
-                , HH.p_ 
-                    [ HH.button 
-                        ([ HP.disabled true
-                         ] <> case answeredQuestion.question.correctAnswer of 
-                                Real -> [ HP.class_ $ HH.ClassName "correct" ]
-                                Fake -> case answeredQuestion.givenAnswer of   
-                                    Fake -> []
-                                    Real -> [ HP.class_ $ HH.ClassName "incorrect" ]
-                        )
-                        [ HH.text "Extension" ]
-                    , HH.button 
-                        ([ HP.disabled true 
-                         ] <> case answeredQuestion.question.correctAnswer of 
-                                Fake -> [ HP.class_ $ HH.ClassName "correct" ]
-                                Real -> case answeredQuestion.givenAnswer of   
-                                    Real -> []
-                                    Fake -> [ HP.class_ $ HH.ClassName "incorrect" ]
-                        )
-                        [ HH.text "Imitation" ]
-                ]
-                , HH.button
-                    [ HE.onClick \_ -> NextQuestion ]
-                    [ HH.text (if Array.null state.upcomingQuestions then "Finish" else "Next") ]
+                , HH.p [HP.class_ $ HH.ClassName "buttons"]
+                    [ HH.p_ 
+                        [ HH.button 
+                            ([ HP.disabled true
+                             ] <> case answeredQuestion.question.correctAnswer of 
+                                    Real -> [ HP.class_ $ HH.ClassName "correct" ]
+                                    Fake -> case answeredQuestion.givenAnswer of   
+                                        Fake -> []
+                                        Real -> [ HP.class_ $ HH.ClassName "incorrect" ]
+                            )
+                            [ HH.text "Extension" ]
+                        , HH.button 
+                            ([ HP.disabled true 
+                             ] <> case answeredQuestion.question.correctAnswer of 
+                                    Fake -> [ HP.class_ $ HH.ClassName "correct" ]
+                                    Real -> case answeredQuestion.givenAnswer of   
+                                        Real -> []
+                                        Fake -> [ HP.class_ $ HH.ClassName "incorrect" ]
+                            )
+                            [ HH.text "Imitation" ]
+                    ]
+                    , HH.button
+                        [ HE.onClick \_ -> NextQuestion ]
+                        [ HH.text (if Array.null state.upcomingQuestions then "Finish" else "Next") ]
+                    ]
             ]
         {-- uncomment this to debug the extension appearance
         , HH.text $ "" <> show (Array.length realExtensions) <> " real, " <> show (Array.length fakeExtensions) <> " fake"
