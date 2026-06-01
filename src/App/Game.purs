@@ -150,7 +150,7 @@ icons g =
             <> (mkSmallIcon <<< iconForQuestion <$> g.upcomingQuestions)
 
 title = HH.p_
-    [ HH.h1_ [HH.text "Extension or Imitation"]
+    [ HH.h1_ [HH.text "Extension or Imitation?"]
     ]
 
 extensionName name = 
