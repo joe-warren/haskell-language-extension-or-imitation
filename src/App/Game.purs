@@ -64,8 +64,10 @@ data State
 initializeGameState :: Effect State
 initializeGameState = do
     randomColours <- shuffle colours 
-    good <- Array.zipWith goodQuestion randomColours <<< Array.take 6 <$> shuffle realExtensions
-    bad <- Array.zipWith badQuestion (Array.drop 6 randomColours) <<< Array.take 6 <$> shuffle fakeExtensions
+    numGood <- pickOr 6 [5, 6, 7]
+    let numBad = 12 - numGood
+    good <- Array.zipWith goodQuestion randomColours <<< Array.take numGood <$> shuffle realExtensions
+    bad <- Array.zipWith badQuestion (Array.drop numGood randomColours) <<< Array.take numBad <$> shuffle fakeExtensions
     questions <- shuffle (Array.concat [good, bad])
     pure $ Playing 
         { answeredQuestions: []
