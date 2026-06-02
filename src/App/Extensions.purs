@@ -59,6 +59,20 @@ proposal id name url child =
         , child
         ] 
 
+negateExtension :: Extension -> Extension
+negateExtension e = 
+    { name: "No" <> e.name
+    , description: HH.div_ [
+        HH.p_ 
+            [ HH.text $ "Switches off the extension " 
+            , HH.code_ [HH.text e.name]
+            , HH.text ", which is defined as:"
+            ]
+        , HH.p_ [ e.description ]
+        ] 
+    }
+
+
 
 realExtensions :: Array Extension
 realExtensions = 
@@ -530,6 +544,14 @@ proposal652 = proposal 652 "Import shadowing" "https://github.com/ghc-proposals/
 
 proposal631 = proposal 631 "Meaningful main return types" "https://github.com/ghc-proposals/ghc-proposals/blob/master/proposals/0631-main-return-types.rst"
 
+
+negateFakeExtension :: Extension -> Extension
+negateFakeExtension e = 
+    { name: "No" <> e.name
+    , description: e.description
+    }
+
+
 fakeExtensions :: Array Extension 
 fakeExtensions =
     [ { name: "ApplicativeDon't", description: parseString "It's `ApplicativeDo`" }
@@ -754,7 +776,13 @@ fakeExtensions =
     , { name: "QualifiedIf", description: submittedBy "mniip"
           [ parseString "The extension that allows customizing the implementation of if ... then ... else ... is `RebindableSyntax`.\nThere's no way to qualify which `ifThenElse` is to be used, like you can with the `QualifiedDo` extension."
           ]
-    }
+    }, { name: "NoIncreasingIndentation", description: submittedBy "Benji"
+        [ parseString "`NondecreasingIndentation` is a real languae extension, this isn't"
+        ]
+    }, { name: "NMinusKPatterns", description: submittedBy "bradrn"
+        [ parseString "`NPlusKPatterns` allows the use of `n+k` patterns.\n`n-k` patterns aren't real.\nThey can't hurt you."
+        ]
+    } 
     , {name: "ExtendedForAllScope", description: proposal448 $
         parseString "Proposed as a standalone extension split out of `ScopedTypeVariables`"
     }
@@ -775,7 +803,6 @@ fakeExtensions =
     }
     , {name: "ImplicitBinds", description: proposal285 $
         parseString "Strawman combined name floated in `Alternatives`, never shipped"
-        
     }
     , {name: "KeywordForall", description: proposal193 $
         parseString "Alternative 'hide behind an extension' option, rejected (forall became a keyword unconditionally)"

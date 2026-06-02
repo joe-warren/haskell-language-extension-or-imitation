@@ -61,13 +61,22 @@ data State
   | Playing CurrentGame 
   | Results (Array AnsweredQuestion) (Maybe AnsweredQuestion)
 
+sample10Percent :: forall a. Array a -> Effect (Array a)
+sample10Percent a = Array.take (Array.length a / 10) <$> shuffle a
+
+doesntStartWithNo :: Extension -> Boolean
+doesntStartWithNo e = String.indexOf (String.Pattern "No") e.name /= Just 0
+
 initializeGameState :: Effect State
 initializeGameState = do
     randomColours <- shuffle colours 
     numGood <- pickOr 6 [5, 6, 7]
     let numBad = 12 - numGood
-    good <- Array.zipWith goodQuestion randomColours <<< Array.take numGood <$> shuffle realExtensions
-    bad <- Array.zipWith badQuestion (Array.drop numGood randomColours) <<< Array.take numBad <$> shuffle fakeExtensions
+    someRealNegated <- map negateExtension <$> sample10Percent realExtensions
+    good <- Array.zipWith goodQuestion randomColours <<< Array.take numGood <$> shuffle (realExtensions <> someRealNegated)
+    
+    someFakeNegated <- map negateFakeExtension <$> sample10Percent (Array.filter doesntStartWithNo fakeExtensions)
+    bad <- Array.zipWith badQuestion (Array.drop numGood randomColours) <<< Array.take numBad <$> shuffle (fakeExtensions <> someFakeNegated)
     questions <- shuffle (Array.concat [good, bad])
     pure $ Playing 
         { answeredQuestions: []
