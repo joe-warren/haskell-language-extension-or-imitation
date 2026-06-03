@@ -782,7 +782,8 @@ fakeExtensions =
     }, { name: "NMinusKPatterns", description: submittedBy "bradrn"
         [ parseString "`NPlusKPatterns` allows the use of `n+k` patterns.\n`n-k` patterns aren't real.\nThey can't hurt you."
         ]
-    } 
+    }
+    , { name: "AmbiguousLiterals", description: submittedBy "nikshalark" [] }
     , {name: "ExtendedForAllScope", description: proposal448 $
         parseString "Proposed as a standalone extension split out of `ScopedTypeVariables`"
     }
