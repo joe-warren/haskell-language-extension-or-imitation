@@ -784,6 +784,7 @@ fakeExtensions =
         ]
     }
     , { name: "AmbiguousLiterals", description: submittedBy "nikshalark" [] }
+    , { name: "ArbitraryTypeclassOmission", description: submittedBy "Xe" []}
     , {name: "ExtendedForAllScope", description: proposal448 $
         parseString "Proposed as a standalone extension split out of `ScopedTypeVariables`"
     }
