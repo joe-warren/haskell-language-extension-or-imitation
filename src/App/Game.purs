@@ -205,7 +205,7 @@ sharingLink linkText erata url s =
 
 
 sharingLinkMastodon :: forall cs m . Array AnsweredQuestion -> HH.ComponentHTML Action cs m
-sharingLinkMastodon = sharingLink "Toot on Mastodon?" "via @hungryjoe@functional.cafe" "https://toot.kytta.dev/" 
+sharingLinkMastodon = sharingLink "Toot on Mastodon?" "via @hungryjoe@functional.cafe" "https://s2f.kytta.dev/" 
 
 sharingLinkBsky :: forall cs m . Array AnsweredQuestion -> HH.ComponentHTML Action cs m
 sharingLinkBsky = sharingLink "Post on BlueSky?" "via @doscienceto.it" "https://bsky.app/intent/compose" 
